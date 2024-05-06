@@ -1,0 +1,5 @@
+,User, Categorie, Produit, Favorit, Commande, Reservation, paiment, Table
+Soulaimane, 1, 0, 0, 0, 0, 0, 1, 0
+Hajar, 0, 1, 1, 0, 0, 0, 0, 0
+Hamza, 0, 0, 0, 1, 1, 0, 0, 0
+Fatimzahra, 0, 0, 0, 0, 0, 1, 0, 1
