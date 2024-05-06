@@ -1,6 +1,15 @@
-const express = require("express")
-const app = express()
+const http = require('http')
+const app = require('./app')
 
-app.listen("3005", ()=> {
-    console.log("Server is running on port 3005! ");
+const port = process.env.PORT || 3005
+
+const server = http.createServer(app)
+
+server.listen(port, function(error){
+    if(error){
+        console.log('Error', error);
+    } else {
+        console.log("Server is runing on Port", port);
+        console.log(`Local url: http://localhost:${port}`);
+    }
 })
