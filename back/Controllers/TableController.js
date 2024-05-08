@@ -2,11 +2,11 @@ const express = require("express")
 const router = express.Router()
 const mongoose = require('mongoose')
 
-const Favorit = require('../Models/Favorit')
-
+const Table = require('../Models/Table')
 
 router.get('/', (req, res, next) => {
-    Favorit.find()
+    User.find()
+        .select('_id Capacite image disponibilite')
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -18,14 +18,17 @@ router.get('/', (req, res, next) => {
             })
         })
 })
+
 router.post('/', (req, res, next) => {
     console.log(req.body);
-    const Favorit = new Favorit({
+    const Table = new Table({
         _id: new mongoose.Types.ObjectId(),
-        user: req.body.user,
-        plat: req.body.plat,
+        Capacite: req.body.Capacite,
+        Image: req.body.Image,
+        Disponibilite: req.body.Disponibilite,
     })
-    Favorit.save()
+
+    Table.save()
         .then(docs => {
             res.status(201).json({status: "success", data: docs})
         })
@@ -35,10 +38,11 @@ router.post('/', (req, res, next) => {
         })
 })
 
-router.get('/:FavoritId', (req, res, next) => {
-    const FavoritId = req.params.FavoritId
+router.get('/:TableId', (req, res, next) => {
+    const TableId = req.params.TableId
 
-    Favorit.find({_id: FavoritId})
+    Table.find({_id: TableId})
+        .select("_id Capacite image disponibilite ")
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -49,18 +53,37 @@ router.get('/:FavoritId', (req, res, next) => {
         })
 })
 
+router.post('/login', (req, res, next) => {
+    let email = req.body.email
+    let pass = req.body.pass
 
+    User.findOne({email: email, pass: pass})
+        .select("_id fname lname email")
+        .exec()
+        .then(docs => {
+            if(docs){
+                res.status(200).json({status: "success", data: docs})
+            } else {
+                res.status(500).json({error: docs})
+            }
+        })
+        .catch(err => {
+            console.log(err),
+            res.status(500).json({error: err})
+        })
+})
 
-router.patch('/:FavoritId', (req, res, next) => {
-    const FavoritId = req.params.FavoritId
+router.patch('/:userId', (req, res, next) => {
+    const userId = req.params.userId
 
-    const UpdateFavorit = {
-        user: req.body.user,
-        plat: req.body.plat,
-      
+    const UpdateUser = {
+        email: req.body.email,
+        pass: req.body.pass,
+        fname: req.body.fname,
+        lname: req.body.lname,
     }
 
-    Favorit.updateOne({_id: FavoritId}, {$set: UpdateFavorit})
+    User.updateOne({_id: userId}, {$set: UpdateUser})
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -73,10 +96,10 @@ router.patch('/:FavoritId', (req, res, next) => {
         })
 })
 
-router.delete('/:FavoritId', (req, res, next) => {
-    const FavoritId = req.params.FavoritId
+router.delete('/:userId', (req, res, next) => {
+    const userId = req.params.userId
    
-    Favorit.deleteOne({_id: FavoritId})
+    User.deleteOne({_id: userId})
         .exec()
         .then(result => {
             res.status(200).json(result)
@@ -90,7 +113,7 @@ router.delete('/:FavoritId', (req, res, next) => {
 })
 
 router.delete('/', (req, res, next) => {
-    Favorit.deleteMany()
+    User.deleteMany()
         .exec()
         .then(result => {
             res.status(200).json(result)
