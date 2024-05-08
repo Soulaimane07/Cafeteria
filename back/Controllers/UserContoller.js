@@ -1,130 +1,113 @@
-const express = require("express")
-const router = express.Router()
-const mongoose = require('mongoose')
+const express = require("express");
+const router = express.Router();
+const mongoose = require('mongoose');
+const User = require('../Models/User');
 
-const User = require('../Models/User')
-
-router.get('/', (req, res, next) => {
-    User.find()
-        .select('_id fname lname email pass')
-        .exec()
-        .then(docs => {
-            res.status(200).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
-})
-
-router.post('/', (req, res, next) => {
-    console.log(req.body);
-    const user = new User({
-        _id: new mongoose.Types.ObjectId(),
-        fname: req.body.fname,
-        lname: req.body.lname,
-        email: req.body.email,
-        pass: req.body.pass,
-    })
-
-    user.save()
-        .then(docs => {
-            res.status(201).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({error: err})
-        })
-})
-
-router.get('/:userId', (req, res, next) => {
-    const userId = req.params.userId
-
-    User.find({_id: userId})
-        .select("_id fname lname email pass")
-        .exec()
-        .then(docs => {
-            res.status(200).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err),
-            res.status(500).json({error: err})
-        })
-})
-
-router.post('/login', (req, res, next) => {
-    let email = req.body.email
-    let pass = req.body.pass
-
-    User.findOne({email: email, pass: pass})
-        .select("_id fname lname email")
-        .exec()
-        .then(docs => {
-            if(docs){
-                res.status(200).json({status: "success", data: docs})
-            } else {
-                res.status(500).json({error: docs})
-            }
-        })
-        .catch(err => {
-            console.log(err),
-            res.status(500).json({error: err})
-        })
-})
-
-router.patch('/:userId', (req, res, next) => {
-    const userId = req.params.userId
-
-    const UpdateUser = {
-        email: req.body.email,
-        pass: req.body.pass,
-        fname: req.body.fname,
-        lname: req.body.lname,
+class UserController {
+    constructor() {
+        this.initializeRoutes();
     }
 
-    User.updateOne({_id: userId}, {$set: UpdateUser})
-        .exec()
-        .then(docs => {
-            res.status(200).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
-})
+    initializeRoutes() {
+        this.router = router;
+        router.get('/', this.getAllUsers.bind(this));
+        router.post('/', this.createUser.bind(this));
+        router.get('/:userId', this.getUserById.bind(this));
+        router.post('/login', this.loginUser.bind(this));
+        router.patch('/:userId', this.updateUser.bind(this));
+        router.delete('/:userId', this.deleteUser.bind(this));
+        router.delete('/', this.deleteAllUsers.bind(this));
+    }
 
-router.delete('/:userId', (req, res, next) => {
-    const userId = req.params.userId
-   
-    User.deleteOne({_id: userId})
-        .exec()
-        .then(result => {
-            res.status(200).json(result)
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
-})
+    async getAllUsers(req, res, next) {
+        try {
+            const users = await User.find().select('_id fname lname email pass').exec();
+            res.status(200).json({ status: "success", data: users });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
 
-router.delete('/', (req, res, next) => {
-    User.deleteMany()
-        .exec()
-        .then(result => {
-            res.status(200).json(result)
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
-})
+    async createUser(req, res, next) {
+        try {
+            const user = new User({
+                _id: new mongoose.Types.ObjectId(),
+                fname: req.body.fname,
+                lname: req.body.lname,
+                email: req.body.email,
+                pass: req.body.pass,
+            });
+            const newUser = await user.save();
+            res.status(201).json({ status: "success", data: newUser });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
 
-module.exports = router
+    async getUserById(req, res, next) {
+        try {
+            const userId = req.params.userId;
+            const user = await User.findById(userId).select('_id fname lname email pass').exec();
+            res.status(200).json({ status: "success", data: user });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+
+    async loginUser(req, res, next) {
+        try {
+            const email = req.body.email;
+            const pass = req.body.pass;
+            const user = await User.findOne({ email: email, pass: pass }).select('_id fname lname email').exec();
+            if (user) {
+                res.status(200).json({ status: "success", data: user });
+            } else {
+                res.status(500).json({ error: "Invalid credentials" });
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+
+    async updateUser(req, res, next) {
+        try {
+            const userId = req.params.userId;
+            const updateOps = {};
+            for (const ops of req.body) {
+                updateOps[ops.propName] = ops.value;
+            }
+            await User.updateOne({ _id: userId }, { $set: updateOps }).exec();
+            res.status(200).json({ status: "success", message: "User updated" });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+
+    async deleteUser(req, res, next) {
+        try {
+            const userId = req.params.userId;
+            await User.deleteOne({ _id: userId }).exec();
+            res.status(200).json({ status: "success", message: "User deleted" });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+
+    async deleteAllUsers(req, res, next) {
+        try {
+            await User.deleteMany().exec();
+            res.status(200).json({ status: "success", message: "All users deleted" });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+}
+
+module.exports = new UserController().router;
