@@ -26,13 +26,20 @@ app.use((req, res, next) => {
 
 
 
+
 // Routes
 
-const usersRoutes = require('./Controllers/UserContoller')
-app.use('/users', usersRoutes)
+const userController = require('./Controllers/UserContoller');
+app.use('/users', userController);
 
-const paimentsRoutes = require('./Controllers/PaimentController')
-app.use('/paiments', paimentsRoutes)
+const paimentsController = require('./Controllers/PaimentController')
+app.use('/paiments', paimentsController)
+
+const favoritsRoutes = require('./Controllers/FavoritController')
+app.use('/favorits', favoritsRoutes)
+
+const commandesRoutes = require('./Controllers/CommandeController')
+app.use('/commandes', commandesRoutes)
 
 
 

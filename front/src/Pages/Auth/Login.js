@@ -1,12 +1,17 @@
 import React, { useState } from 'react'
 import Auth from './Auth'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { LoadingBtn } from '../../Components/Buttons'
 import { serverUrl } from '../../Components/Variables'
 import { PageTitle } from '../../Components/Functions'
+import { useDispatch } from 'react-redux'
+import { UserActions } from '../../Redux/Slices/UserSlice'
 
 function Login() {
     PageTitle('Cafeteria | Login')
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
@@ -28,8 +33,9 @@ function Login() {
         )
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 setLoading(false)
+                dispatch(UserActions.login(data.data))
+                navigate('/')
             })
             .catch(error => {
                 console.error(error)
