@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import Auth from './Auth'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { serverUrl } from '../../Components/Variables'
 import { LoadingBtn } from '../../Components/Buttons'
 import { PageTitle } from '../../Components/Functions'
+import { UserActions } from '../../Redux/Slices/UserSlice'
+import { useDispatch } from 'react-redux'
 
 function Signup() {
    PageTitle('Cafeteria | Register')
@@ -15,6 +17,8 @@ function Signup() {
 
 
     const [loading, setLoading] = useState('')
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const SignupFun = (event) => {
         event.preventDefault();
@@ -31,8 +35,9 @@ function Signup() {
         )
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 setLoading(false)
+                dispatch(UserActions.login(data.data))
+                navigate('/')
             })
             .catch(error => {
                 console.error(error)
