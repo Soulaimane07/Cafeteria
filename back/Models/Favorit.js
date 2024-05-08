@@ -7,12 +7,12 @@ const favoritSchema = mongoose.Schema({
         ref: "User",
         unique: false,
     },
-   /* plat: {
+    plat: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Plat",
         unique: false,
     }
-    */
+    
    
 })
 

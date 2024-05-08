@@ -34,6 +34,12 @@ app.use('/users', usersRoutes)
 const paimentsRoutes = require('./Controllers/PaimentController')
 app.use('/paiments', paimentsRoutes)
 
+const favoritsRoutes = require('./Controllers/FavoritController')
+app.use('/favorits', favoritsRoutes)
+
+const commandesRoutes = require('./Controllers/CommandeController')
+app.use('/commandes', commandesRoutes)
+
 
 
 
