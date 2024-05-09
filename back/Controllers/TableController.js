@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const Table = require('../Models/Table')
 
 router.get('/', (req, res, next) => {
-    User.find()
+    Table.find()
         .select('_id Capacite image disponibilite')
         .exec()
         .then(docs => {
@@ -21,14 +21,14 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
     console.log(req.body);
-    const Table = new Table({
+    const table = new Table({
         _id: new mongoose.Types.ObjectId(),
         Capacite: req.body.Capacite,
         Image: req.body.Image,
         Disponibilite: req.body.Disponibilite,
     })
 
-    Table.save()
+    table.save()
         .then(docs => {
             res.status(201).json({status: "success", data: docs})
         })
@@ -53,37 +53,17 @@ router.get('/:TableId', (req, res, next) => {
         })
 })
 
-router.post('/login', (req, res, next) => {
-    let email = req.body.email
-    let pass = req.body.pass
+router.patch('/:TableId', (req, res, next) => {
+    const TableId = req.params.TableId
 
-    User.findOne({email: email, pass: pass})
-        .select("_id fname lname email")
-        .exec()
-        .then(docs => {
-            if(docs){
-                res.status(200).json({status: "success", data: docs})
-            } else {
-                res.status(500).json({error: docs})
-            }
-        })
-        .catch(err => {
-            console.log(err),
-            res.status(500).json({error: err})
-        })
-})
-
-router.patch('/:userId', (req, res, next) => {
-    const userId = req.params.userId
-
-    const UpdateUser = {
-        email: req.body.email,
-        pass: req.body.pass,
-        fname: req.body.fname,
-        lname: req.body.lname,
+    const UpdateTable = {
+        id: req.body.id,
+        Capacite: req.body.Capacite,
+        image: req.body.image,
+        Disponibilite: req.body.Disponibilite,
     }
 
-    User.updateOne({_id: userId}, {$set: UpdateUser})
+    Table.updateOne({_id: TableId}, {$set: UpdateTable})
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -96,10 +76,10 @@ router.patch('/:userId', (req, res, next) => {
         })
 })
 
-router.delete('/:userId', (req, res, next) => {
-    const userId = req.params.userId
+router.delete('/:TableId', (req, res, next) => {
+    const TableId = req.params.TableId
    
-    User.deleteOne({_id: userId})
+    Table.deleteOne({_id: TableId})
         .exec()
         .then(result => {
             res.status(200).json(result)
@@ -111,9 +91,8 @@ router.delete('/:userId', (req, res, next) => {
             })
         })
 })
-
 router.delete('/', (req, res, next) => {
-    User.deleteMany()
+    Table.deleteMany()
         .exec()
         .then(result => {
             res.status(200).json(result)
