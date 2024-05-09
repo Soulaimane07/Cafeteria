@@ -3,16 +3,17 @@ import { CiTrash } from 'react-icons/ci';
 import { BiEditAlt } from "react-icons/bi";
 import { IoAdd } from "react-icons/io5";
 import { Link } from 'react-router-dom';
-function Table() {
-    const Tables = []
+
+function Reservations() {
+    const Reservation = []
   return (
-      <>
+    <>
        <div className='w-full border-l-2   border-gray-100 min-h-svh'>
        <header className='w-5/6 mb-8 mx-20 justify-between flex text-center'>
-                  <h1 className='text-2xl font-medium'> Tables ({Tables?.length}) </h1>
-                  <Link to={"/admin/addtable"} className='flex items-center px-6 border-2 bg-hoverPrimaryColor  border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all  rounded-sm py-2 space-x-1'> 
+                  <h1 className='text-2xl font-medium'> Reservation ({Reservations?.length}) </h1>
+                  <Link to={"/admin/addreservation"} className='flex items-center px-6 border-2 bg-hoverPrimaryColor  border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all  rounded-sm py-2 space-x-1'> 
                       <IoAdd size={20} />
-                      <p> Table </p>
+                      <p> Reservation</p>
                   </Link>
               </header>
               
@@ -24,13 +25,10 @@ function Table() {
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
               <tr>
                   <th scope="col" class="px-6 py-3">
-                      Id
+                      Id_Table
                   </th>
                   <th scope="col" class="px-6 py-3">
-                     Capacite
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                      Disponibilite
+                      Id_Client
                   </th>
                   <th scope="col" class="px-6 py-3">
                       Action
@@ -38,7 +36,7 @@ function Table() {
               </tr>
           </thead>
           <tbody>
-              {Tables.map((list,key)=>(<tr  class="bg-white border-b ">
+              {Reservation.map((list,key)=>(<tr  class="bg-white border-b ">
                   <th  scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                       {list.Table.id}
                   </th>
@@ -71,4 +69,4 @@ function Table() {
   )
 }
 
-export default Table
+export default Reservations

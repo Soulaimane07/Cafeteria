@@ -2,7 +2,7 @@ import React from 'react'
 import AdminNavbar from '../../../Components/Navbar/AdminNavbar'
 import Footer from '../../../Components/Footer/Footer'
 import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
-import Table from '../Tables/Table'   
+import Table from './Table'   
 function ReadTables() {
   return (
     <>

@@ -12,7 +12,7 @@ import ReadUsers from './Pages/Admin/Users/ReadUsers';
 import ReadProduct from './Pages/Admin/Products/ReadProduct';
 import ReadCategories from './Pages/Admin/Categories/ReadCategories';
 import ReadTables from './Pages/Admin/Tables/ReadTables';
-import ReadReservations from './Pages/Admin/Tables/ReadTables';
+import ReadReservations from './Pages/Admin/Rerservations/ReadReservations';
 import ReadOrders from './Pages/Admin/Orders/ReadOrders';
 function App() {
   const user = useSelector(state => state.User)
