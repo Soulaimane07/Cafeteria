@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require('mongoose');
-const User = require('../Models/User');
+const sql = require('mssql');
 
 class UserController {
     constructor() {
@@ -21,8 +20,13 @@ class UserController {
 
     async getAllUsers(req, res, next) {
         try {
-            const users = await User.find().select('_id fname lname email pass').exec();
-            res.status(200).json({ status: "success", data: users });
+            let request = new sql.Request();
+            request.query("select * from users", (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0] });
+                }
+            })
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: error });
@@ -31,15 +35,13 @@ class UserController {
 
     async createUser(req, res, next) {
         try {
-            const user = new User({
-                _id: new mongoose.Types.ObjectId(),
-                fname: req.body.fname,
-                lname: req.body.lname,
-                email: req.body.email,
-                pass: req.body.pass,
-            });
-            const newUser = await user.save();
-            res.status(201).json({ status: "success", data: newUser });
+            let request = new sql.Request();
+            request.query(`INSERT INTO users (email, fname, lname, pass, role) VALUES ('${req.body.email}', '${req.body.fname}', '${req.body.lname}', '${req.body.pass}', 'client')`, (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0] });
+                }
+            })
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: error });
@@ -49,8 +51,14 @@ class UserController {
     async getUserById(req, res, next) {
         try {
             const userId = req.params.userId;
-            const user = await User.findById(userId).select('_id fname lname email pass').exec();
-            res.status(200).json({ status: "success", data: user });
+
+            let request = new sql.Request();
+            request.query(`select * from users where id=${userId}`, (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0] });
+                }
+            })
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: error });
@@ -61,12 +69,17 @@ class UserController {
         try {
             const email = req.body.email;
             const pass = req.body.pass;
-            const user = await User.findOne({ email: email, pass: pass }).select('_id fname lname email').exec();
-            if (user) {
-                res.status(200).json({ status: "success", data: user });
-            } else {
-                res.status(500).json({ error: "Invalid credentials" });
-            }
+
+
+            let request = new sql.Request();
+            request.query(`select * from users where email='${email}' and pass='${pass}'`, (err, records)=> {
+                if(err){
+                    res.status(400).json();
+                    console.log(err);
+                } else {
+                    res.status(200).json({ status: "success", data: records.recordset[0] });
+                }
+            })
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: error });
@@ -76,11 +89,12 @@ class UserController {
     async updateUser(req, res, next) {
         try {
             const userId = req.params.userId;
+
             const updateOps = {};
             for (const ops of req.body) {
                 updateOps[ops.propName] = ops.value;
             }
-            await User.updateOne({ _id: userId }, { $set: updateOps }).exec();
+
             res.status(200).json({ status: "success", message: "User updated" });
         } catch (error) {
             console.log(error);
@@ -91,8 +105,16 @@ class UserController {
     async deleteUser(req, res, next) {
         try {
             const userId = req.params.userId;
-            await User.deleteOne({ _id: userId }).exec();
-            res.status(200).json({ status: "success", message: "User deleted" });
+
+            let request = new sql.Request();
+            request.query(`delete from users where id='${userId}'`, (err, records)=> {
+                if(err){
+                    res.status(400).json();
+                    console.log(err);
+                } else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0]});
+                }
+            })
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: error });
@@ -101,8 +123,15 @@ class UserController {
 
     async deleteAllUsers(req, res, next) {
         try {
-            await User.deleteMany().exec();
-            res.status(200).json({ status: "success", message: "All users deleted" });
+            let request = new sql.Request();
+            request.query(`delete from users`, (err, records)=> {
+                if(err){
+                    res.status(400).json();
+                    console.log(err);
+                } else {
+                    res.status(200).json({ status: "success"});
+                }
+            })
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: error });

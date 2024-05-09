@@ -1,12 +1,9 @@
 const express = require('express')
 const app = express()
-const mongoose = require("mongoose")
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 
 
-mongoose.connect('mongodb+srv://soulaimane:1234@cluster0.tjuhvzz.mongodb.net/')
-mongoose.Promise = global.Promise
 
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended: false}))
