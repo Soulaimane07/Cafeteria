@@ -39,7 +39,7 @@ class UserController {
             request.query(`INSERT INTO users (email, fname, lname, pass, role) VALUES ('${req.body.email}', '${req.body.fname}', '${req.body.lname}', '${req.body.pass}', 'client')`, (err, records)=> {
                 if(err) console.log(err);
                 else {
-                    res.status(200).json({ status: "success", data: records.recordsets[0] });
+                    res.status(200).json({ status: "success", data: records });
                 }
             })
         } catch (error) {
