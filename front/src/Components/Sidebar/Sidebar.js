@@ -13,39 +13,39 @@ function Sidebar() {
         {
             "title": "Home",
             "link": "/",
-            "icon": <GoHome />
+            "icon": <GoHome size={20} />
         },
         {
             "title": "Food Order",
             "link": "/order",
-            "icon": <IoCartOutline />
+            "icon": <IoCartOutline size={20} />
         },
         {
             "title": "Favorite Menu",
             "link": "/favorite",
-            "icon": <GrFavorite />
+            "icon": <GrFavorite size={20} />
         },
         {
             "title": "Bill",
             "link": "/bill",
-            "icon": <RiBillLine />
+            "icon": <RiBillLine size={20} />
         },
         {
             "title": "Restaurant",
             "link": "/restaurant",
-            "icon": <IoRestaurantOutline />
+            "icon": <IoRestaurantOutline size={20} />
         },
         {
             "title": "Setting",
             "link": "/setting",
-            "icon": <IoSettingsOutline />
+            "icon": <IoSettingsOutline size={20} />
         },
     ]
 
   return (
     <section className=' w-1/5 px-10 py-10'>
         <Link to={'/'} className="flex justify-center">
-            <img src="../images/logo.jpg" className='w-40' />
+            <img src="../images/logo.jpg" className='w-40' alt='logo' />
         </Link>
 
         <ul className='flex flex-col space-y-3 mt-6'>

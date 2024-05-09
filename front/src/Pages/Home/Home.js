@@ -1,13 +1,17 @@
-import React from 'react'
 import Navbar from '../../Components/Navbar/Navbar'
 import Footer from '../../Components/Footer/Footer'
 import Sidebar from '../../Components/Sidebar/Sidebar'
 import Header from './Header'
 import Categorie from './Categorie'
 import { PageTitle } from '../../Components/Functions'
+import { serverUrl } from "../../Components/Variables";
+
 
 function Home() {
   PageTitle('Cafeteria | Home')
+
+
+  
 
   return (
     <>
@@ -20,7 +24,18 @@ function Home() {
                     <Header />
                     <Categorie />
                 </section>
+            <section>
+    
+    <form action={`${serverUrl}/paiments/checkout`} method="POST">
+      <button type="submit">
+        Checkout
+      </button>
+    </form>
+
+
+  </section>
             </section>
+
         </main>
 
         <Footer />

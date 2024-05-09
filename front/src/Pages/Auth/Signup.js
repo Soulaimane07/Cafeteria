@@ -49,7 +49,7 @@ function Signup() {
     <main className='flex h-screen overflow-hidden items-center'>
         <Auth />
         <section className='w-1/2 px-32'>
-            <img src="../images/logo.jpg" className='w-52 mx-auto' />
+            <img src="../images/logo.jpg" className='w-52 mx-auto' alt='logo' />
 
             <form onSubmit={SignupFun} className="">
                 <div className="mb-5">

@@ -12,7 +12,7 @@ function Header() {
                 <IoCartOutline size={20} /> 
             </button>
         </div>
-        <img src="../images/header.png" />
+        <img src="../images/header.png" alt='header' />
     </div>
   )
 }
