@@ -11,7 +11,8 @@ import Dashboard from './Pages/Admin/Dashboard/Dashboard';
 import ReadUsers from './Pages/Admin/Users/ReadUsers';
 import ReadProduct from './Pages/Admin/Products/ReadProduct';
 import ReadCategories from './Pages/Admin/Categories/ReadCategories';
-
+import ReadTables from './Pages/Admin/Tables/ReadTables';
+import ReadReservations from './Pages/Admin/Tables/ReadTables';
 function App() {
   const user = useSelector(state => state.User)
   console.log(user);
@@ -38,6 +39,8 @@ function App() {
           <Route path='/admin/users' element={<ReadUsers />} />
           <Route path='/admin/products' element={<ReadProduct />} />
           <Route path='/admin/categories' element={<ReadCategories />} />
+          <Route path='/admin/Tables' element={<ReadTables />} />
+          <Route path='/admin/Reservations' element={<ReadReservations/>} />
           <Route path='/' element={<Home />} />
           <Route element={<ProtectedRoutes />}>
             
