@@ -14,7 +14,7 @@ function Order() {
       <>
        <div className='w-full border-l-2   border-gray-100 min-h-svh'>
        <header className='w-5/6 mb-8 mx-20 justify-between flex text-center'>
-                  <h1 className='text-2xl font-medium'> Orders ({categories?.length}) </h1>
+                  <h1 className='text-2xl font-medium'> Orders ({orders?.length}) </h1>
                   <Link to={"/admin/addcategory"} className='flex items-center px-6 border-2 bg-hoverPrimaryColor  border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all  rounded-sm py-2 space-x-1'> 
                       <IoAdd size={20} />
                       <p> Order </p>
@@ -32,16 +32,18 @@ function Order() {
                       Id
                   </th>
                   <th scope="col" class="px-6 py-3">
-                     title
+                     Id Client
                   </th>
-                  
+                  <th scope="col" class="px-6 py-3">
+                     Id Plat
+                  </th>
                   <th scope="col" class="px-6 py-3">
                       Action
                   </th>
               </tr>
           </thead>
           <tbody>
-              {categories.map((list,key)=>(<tr  class="bg-white border-b ">
+              {orders.map((list,key)=>(<tr  class="bg-white border-b ">
                   <th  scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                       {list.id}
                   </th>
