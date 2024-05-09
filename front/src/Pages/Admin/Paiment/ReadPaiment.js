@@ -2,8 +2,8 @@ import React from 'react'
 import AdminNavbar from '../../../Components/Navbar/AdminNavbar'
 import Footer from '../../../Components/Footer/Footer'
 import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
-import Order from './Order'
-function ReadOrders() {
+import Paiment from './Paiment'
+function ReadPaiment() {
   return (
     <>
     <main className='flex'>
@@ -13,7 +13,7 @@ function ReadOrders() {
 
             <section className='flex-1 rounded-md px-10 mt-10'>
                
-      <Order />
+      <Paiment />
             </section>
         </section>
     </main>
@@ -23,4 +23,4 @@ function ReadOrders() {
   )
 }
 
-export default ReadOrders
+export default ReadPaiment
