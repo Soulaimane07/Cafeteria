@@ -9,7 +9,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 const Buttons = ({createFun, condittion}) => {
     return(
         <div className='flex space-x-2 items-stretch'>
-            <Link to={'/admin/readUser'} className='px-8 py-2 text-gray-800 opacity-80 hover:border-blue-600 hover:text-blue-700 hover:bg-white transition-all border-2 border-transparent'>Cancel</Link>
+            <Link to={'/admin/readUser'} className='px-8 py-2 text-gray-800 opacity-80 hover:border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all border-2 border-transparent'>Cancel</Link>
             <button 
                 onClick={createFun} 
                 disabled={condittion}
@@ -49,7 +49,7 @@ function AddUsers() {
             <article className='flex-1'>
           <header className='w-full mb-6 px-8 justify-between flex text-center items-center'>
               <div className='flex space-x-3 text-gray-800 '>
-                  <Link to={"/admin/readUser"} className='flex px-4 border-2 text-gray-600 border-gray-200 rounded-sm items-center bg-white hover:border-blue-600 hover:text-blue-700 hover:bg-white transition-all py-2 space-x-1'> 
+                  <Link to={"/admin/readUser"} className='flex px-4 border-2 text-gray-600 border-gray-200 rounded-sm items-center bg-white hover:border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all py-2 space-x-1'> 
                       <FaArrowLeft size={20} />
                   </Link>
                   <h1 className='text-2xl font-medium text-gray-800'> Add New User </h1>
