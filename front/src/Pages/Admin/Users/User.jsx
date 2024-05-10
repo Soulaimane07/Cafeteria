@@ -8,9 +8,9 @@ import { Link } from 'react-router-dom';
 
 function User() {
    
-    const users = []
+    const users = [{"id":1,"lname":"last","fname":"pilot","email":"hamza@gmail.com","password":"123456","role":"client"}]
  
-    
+    console.log(users)
     
   return (
     
@@ -32,7 +32,7 @@ function User() {
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
             <tr>
                 <th scope="col" class="px-6 py-3">
-                    Id
+                    Id 
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Last Name
@@ -53,21 +53,21 @@ function User() {
             </tr>
         </thead>
         <tbody>
-            {users.map((list,key)=>(<tr  class="bg-white border-b ">
+            {users.map((user,key)=>(<tr  class="bg-white border-b ">
                 <th  scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                    {list.user.id}
+                    {user.id}
                 </th>
                 <td class="px-6 py-4">
-                    {list.user.lname}
+                    {user.lname}
                 </td>
                 <td class="px-6 py-4">
-                {list.user.fname}
+                {user.fname}
                 </td>
                 <td class="px-6 py-4">
-                {list.user.email}
+                {user.email}
                 </td>
                 <td class="px-6 py-4">
-                {list.user.role}
+                {user.role}
                 </td>
                 <td class="px-6 py-4 ">
                 <Link to=''>
