@@ -1,103 +1,87 @@
-const express = require("express")
-const router = express.Router()
-const mongoose = require('mongoose')
+const express = require("express");
+const router = express.Router();
+const sql = require('mssql');
 
-const Reservation = require('../Models/Rerservation')
-const Reservation = require("../Models/Reservation")
-
-router.get('/', (req, res, next) => {
-    Reservation.find()
-        .select('_id')
-        .exec()
-        .then(docs => {
-            res.status(200).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
-})
-
-router.post('/', (req, res, next) => {
-    console.log(req.body);
-    const reservation= new Reservation({
-        _id: new mongoose.Types.ObjectId(),
-       })
-
-    reservation.save()
-        .then(docs => {
-            res.status(201).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({error: err})
-        })
-})
-
-router.get('/:ReservationId', (req, res, next) => {
-    const ReservationId = req.params.ReservationIdId
-
-    Reservation.find({_id: ReservationId})
-        .exec()
-        .then(docs => {
-            res.status(200).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err),
-            res.status(500).json({error: err})
-        })
-})
-
-router.patch('/:ReservationId', (req, res, next) => {
-    const ReservationId = req.params.ReservationId
-
-    const UpdateReservation = {
-        id: req.body.id,
+class ReservationController {
+    constructor() {
+        this.initializeRoutes();
     }
 
-    Reservation.updateOne({_id: ReservationId}, {$set: UpdateReservation})
-        .exec()
-        .then(docs => {
-            res.status(200).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
-})
+    initializeRoutes() {
+        this.router = router;
+        router.get('/', this.getAllReservations.bind(this));
+        router.post('/', this.createReservation.bind(this));
+        router.get('/:reservationId', this.getReservationById.bind(this));
+        router.delete('/:reservationId', this.deleteReservation.bind(this));
+    }
 
-router.delete('/:ReservationId', (req, res, next) => {
-    const ReservationId = req.params.ReservationId
-   
-    Reservation.deleteOne({_id: ReservationId})
-        .exec()
-        .then(result => {
-            res.status(200).json(result)
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
+    async getAllReservations(req, res, next) {
+        try {
+            let request = new sql.Request();
+            request.query("select * from reservations", (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0] });
+                }
             })
-        })
-})
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
 
-router.delete('/', (req, res, next) => {
-    Reservation.deleteMany()
-        .exec()
-        .then(result => {
-            res.status(200).json(result)
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
+    async createReservation(req, res, next) {
+        try {
+            let request = new sql.Request();
+            request.query(`INSERT INTO reservations (clientId,tableId) VALUES ('${req.body.clientId}', '${req.body.tableId}')`, (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records });
+                }
             })
-        })
-})
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
 
-module.exports = router
+    async getReservationById(req, res, next) {
+        try {
+            const reservationId = req.params.reservationId;
+
+            let request = new sql.Request();
+            request.query(`select * from reservations where id=${reservationId}`, (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0] });
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+
+ 
+
+    async deleteReservation(req, res, next) {
+        try {
+            const reservationId = req.params.reservationId;
+
+            let request = new sql.Request();
+            request.query(`delete from reservations where id='${reservationId}'`, (err, records)=> {
+                if(err){
+                    res.status(400).json();
+                    console.log(err);
+                } else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0]});
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+}
+
+module.exports = new ReservationController().router;

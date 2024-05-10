@@ -1,108 +1,118 @@
-const express = require("express")
-const router = express.Router()
-const mongoose = require('mongoose')
+const express = require("express");
+const router = express.Router();
+const sql = require('mssql');
 
-const Table = require('../Models/Table')
-
-router.get('/', (req, res, next) => {
-    Table.find()
-        .select('_id Capacite image disponibilite')
-        .exec()
-        .then(docs => {
-            res.status(200).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
-})
-
-router.post('/', (req, res, next) => {
-    console.log(req.body);
-    const table = new Table({
-        _id: new mongoose.Types.ObjectId(),
-        Capacite: req.body.Capacite,
-        Image: req.body.Image,
-        Disponibilite: req.body.Disponibilite,
-    })
-
-    table.save()
-        .then(docs => {
-            res.status(201).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({error: err})
-        })
-})
-
-router.get('/:TableId', (req, res, next) => {
-    const TableId = req.params.TableId
-
-    Table.find({_id: TableId})
-        .select("_id Capacite image disponibilite ")
-        .exec()
-        .then(docs => {
-            res.status(200).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err),
-            res.status(500).json({error: err})
-        })
-})
-
-router.patch('/:TableId', (req, res, next) => {
-    const TableId = req.params.TableId
-
-    const UpdateTable = {
-        id: req.body.id,
-        Capacite: req.body.Capacite,
-        image: req.body.image,
-        Disponibilite: req.body.Disponibilite,
+class TableController {
+    constructor() {
+        this.initializeRoutes();
     }
 
-    Table.updateOne({_id: TableId}, {$set: UpdateTable})
-        .exec()
-        .then(docs => {
-            res.status(200).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
-})
+    initializeRoutes() {
+        this.router = router;
+        router.get('/', this.getAllTables.bind(this));
+        router.post('/', this.createTable.bind(this));
+        router.get('/:tableId', this.getTableById.bind(this));
+        router.patch('/:tableId', this.updateTable.bind(this));
+        router.delete('/:tableId', this.deleteTable.bind(this));
+        router.delete('/', this.deleteAllTables.bind(this));
+    }
 
-router.delete('/:TableId', (req, res, next) => {
-    const TableId = req.params.TableId
-   
-    Table.deleteOne({_id: TableId})
-        .exec()
-        .then(result => {
-            res.status(200).json(result)
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
+    async getAllTables(req, res, next) {
+        try {
+            let request = new sql.Request();
+            request.query("select * from tables", (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0] });
+                }
             })
-        })
-})
-router.delete('/', (req, res, next) => {
-    Table.deleteMany()
-        .exec()
-        .then(result => {
-            res.status(200).json(result)
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
-})
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
 
-module.exports = router
+    async createTable(req, res, next) {
+        try {
+            let request = new sql.Request();
+            request.query(`INSERT INTO tables (capacite,image, disponibilite) VALUES ('${req.body.capacite}', '${req.body.image}', '${req.body.disponibilite}')`, (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records });
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+
+    async getTableById(req, res, next) {
+        try {
+            const tableId = req.params.tableId;
+
+            let request = new sql.Request();
+            request.query(`select * from tables where id=${tableId}`, (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0] });
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+
+    async updateTable(req, res, next) {
+        try {
+            const tableId = req.params.tableId;
+
+            const updateOps = {};
+            for (const ops of req.body) {
+                updateOps[ops.propName] = ops.value;
+            }
+            res.status(200).json({ status: "success", message: "User updated" });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+
+    async deleteTable(req, res, next) {
+        try {
+            const tableId = req.params.tableId;
+
+            let request = new sql.Request();
+            request.query(`delete from tables where id='${tableId}'`, (err, records)=> {
+                if(err){
+                    res.status(400).json();
+                    console.log(err);
+                } else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0]});
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+
+    async deleteAllTables(req, res, next) {
+        try {
+            let request = new sql.Request();
+            request.query(`delete from tables`, (err, records)=> {
+                if(err){
+                    res.status(400).json();
+                    console.log(err);
+                } else {
+                    res.status(200).json({ status: "success"});
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+}
+module.exports = new TableController().router;
