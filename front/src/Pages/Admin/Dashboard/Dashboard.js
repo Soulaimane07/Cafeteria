@@ -2,11 +2,7 @@ import React from 'react'
 import AdminNavbar from '../../../Components/Navbar/AdminNavbar'
 import Footer from '../../../Components/Footer/Footer'
 import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
-import Product from '../Products/Product'
-import Categorie from '../../Home/Categorie'
-import User from '../Users/User'
 import { Link } from 'react-router-dom'
-import { GoHome } from "react-icons/go";
 import { IoCartOutline } from "react-icons/io5";
 import { RiBillLine } from "react-icons/ri";
 import { IoRestaurantOutline } from "react-icons/io5";
@@ -25,9 +21,9 @@ function Dashboard() {
     },
     {
         image: <IoRestaurantOutline size={40} />,
-        title: "Products",
+        title: "Dishes",
         stats:"",
-        link:"../../admin/readproduct"
+        link:"../../admin/readDish"
     },
     {
         image: <BiCategory size={40} />,

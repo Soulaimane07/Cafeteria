@@ -2,9 +2,7 @@ import React from 'react'
 import AdminNavbar from '../../../Components/Navbar/AdminNavbar'
 import Footer from '../../../Components/Footer/Footer'
 import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
-import Product from '../Products/Product'
-import Categorie from '../../Home/Categorie'
-import User from '../Users/User'
+
 import Category from './Category'
 function ReadCategories() {
   return (

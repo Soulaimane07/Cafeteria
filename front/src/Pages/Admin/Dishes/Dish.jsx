@@ -4,17 +4,17 @@ import { BiEditAlt } from "react-icons/bi";
 import { IoAdd } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 
-function Product() {
+function Dish() {
   const Products = []
   return (
     
     <>
      <div className=' w-full border-2 border-gray-100 min-h-svh'>
      <header className='w-5/6 mb-8 mx-20 justify-between flex text-center'>
-                <h1 className='text-2xl font-medium'> Products ({Products?.length}) </h1>
-                <Link to={"/admin/addProduct"} className='flex items-center px-6 border-2 bg-hoverPrimaryColor  border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all  rounded-sm py-2 space-x-1'> 
+                <h1 className='text-2xl font-medium'> Dishes ({Products?.length}) </h1>
+                <Link to={"/admin/adddish"} className='flex items-center px-6 border-2 bg-hoverPrimaryColor  border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all  rounded-sm py-2 space-x-1'> 
                     <IoAdd size={20} />
-                    <p> Product </p>
+                    <p> Dish </p>
                 </Link>
             </header>
             <div className=' px-20 text-center'>
@@ -90,4 +90,4 @@ function Product() {
   )
 }
 
-export default Product
+export default Dish
