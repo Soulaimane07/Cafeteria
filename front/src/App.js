@@ -17,6 +17,7 @@ import ReadTables from './Pages/Admin/Tables/ReadTables';
 import ReadReservations from './Pages/Admin/Rerservations/ReadReservations';
 import ReadOrders from './Pages/Admin/Orders/ReadOrders';
 import ReadPaiment from './Pages/Admin/Paiment/ReadPaiment';
+import AddTables from './Pages/Admin/Tables/AddTables';
 
 function App() {
   const user = useSelector(state => state.User)
@@ -53,6 +54,7 @@ function App() {
             <Route path='/admin/reservations' element={<ReadReservations/>} />
             <Route path='/admin/orders' element={<ReadOrders />} />
             <Route path='/admin/paiments' element={<ReadPaiment />} />
+            <Route path='/admin/addtable' element={<AddTables />} />
           <Route element={<AdminRoutes />}>
             
           </Route>
