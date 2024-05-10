@@ -2,24 +2,26 @@ const express = require("express");
 const router = express.Router();
 const sql = require('mssql');
 
-class FavoritController {
+class OrderController {
     constructor() {
         this.initializeRoutes();
     }
 
     initializeRoutes() {
         this.router = router;
-        router.get('/', this.getAllFavorits.bind(this));
-        router.post('/', this.createFavorit.bind(this));
-        router.get('/:userId', this.getFavoritByClient.bind(this));
-        router.delete('/:userId', this.deleteFavorit.bind(this));
-        router.delete('/', this.deleteAllFavorits.bind(this));
+        router.get('/', this.getAllOrders.bind(this));
+        router.post('/', this.createOrder.bind(this));
+        router.get('/:orderId', this.getOrderById.bind(this));
+        router.patch('/:orderId', this.updateOrder.bind(this));
+        router.delete('/:orderId', this.deleteOrder.bind(this));
+        router.delete('/', this.deleteAllOrders.bind(this));
+        router.get('/:userId', this.getOrderByClient.bind(this));
     }
 
-    async getAllFavorits(req, res, next) {
+    async getAllOrders(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query("select * from favorits", (err, records)=> {
+            request.query("select * from orders", (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -31,10 +33,10 @@ class FavoritController {
         }
     }
 
-    async createFavorit(req, res, next) {
+    async createOrder(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`INSERT INTO favorits (clientId,platId) VALUES ('${req.body.clientId}', '${req.body.platId}')`, (err, records)=> {
+            request.query(`INSERT INTO orders (clientId,platId) VALUES ('${req.body.clientId}', '${req.body.platId}')`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records });
@@ -46,12 +48,12 @@ class FavoritController {
         }
     }
 
-    async getFavoritByClient(req, res, next) {
+    async getOrderById(req, res, next) {
         try {
-            const userId = req.params.userId;
+            const orderId = req.params.orderId;
 
             let request = new sql.Request();
-            request.query(`select * from favorits where userid=${userId}`, (err, records)=> {
+            request.query(`select * from orders where id=${orderId}`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -63,12 +65,45 @@ class FavoritController {
         }
     }
 
-    async deleteFavorit(req, res, next) {
+    async getOrderByClient(req, res, next) {
         try {
-            const favoritId = req.params.favoritId;
+            const userId = req.params.userId;
 
             let request = new sql.Request();
-            request.query(`delete from favorits where id='${favoritId}'`, (err, records)=> {
+            request.query(`select * from orders where clientId=${userId}`, (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0] });
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+
+    async updateOrder(req, res, next) {
+        try {
+            const orderId = req.params.orderId;
+
+            const updateOps = {};
+            for (const ops of req.body) {
+                updateOps[ops.propName] = ops.value;
+            }
+
+            res.status(200).json({ status: "success", message: "Order updated" });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+
+    async deleteOrder(req, res, next) {
+        try {
+            const orderId = req.params.orderId;
+
+            let request = new sql.Request();
+            request.query(`delete from orders where id='${orderId}'`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -82,10 +117,10 @@ class FavoritController {
         }
     }
 
-    async deleteAllFavorits(req, res, next) {
+    async deleteAllOrders(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`delete from favorits`, (err, records)=> {
+            request.query(`delete from orders`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -100,4 +135,4 @@ class FavoritController {
     }
 }
 
-module.exports = new FavoritController().router;
+module.exports = new OrderController().router;
