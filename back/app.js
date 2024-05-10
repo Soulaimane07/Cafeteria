@@ -38,6 +38,12 @@ app.use('/favorits', favoritsRoutes)
 const ordersRoutes = require('./Controllers/OrderController')
 app.use('/orders', ordersRoutes)
 
+const dishesRoutes = require('./Controllers/DishController')
+app.use('/dishes', dishesRoutes)
+
+const categoriesRoutes = require('./Controllers/CategoryController')
+app.use('/categories', categoriesRoutes)
+
 
 
 
