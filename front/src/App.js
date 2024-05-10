@@ -14,7 +14,7 @@ import AddUsers from './Pages/Admin/Users/AddUsers';
 import ReadDish from './Pages/Admin/Dishes/ReadDish';
 import ReadCategories from './Pages/Admin/Categories/ReadCategories';
 import ReadTables from './Pages/Admin/Tables/ReadTables';
-import ReadReservations from './Pages/Admin/Rerservations/ReadReservations';
+import ReadReservations from './Pages/Admin/Reservations/ReadReservations';
 import ReadOrders from './Pages/Admin/Orders/ReadOrders';
 import ReadPaiment from './Pages/Admin/Paiment/ReadPaiment';
 import AddTables from './Pages/Admin/Tables/AddTables';
