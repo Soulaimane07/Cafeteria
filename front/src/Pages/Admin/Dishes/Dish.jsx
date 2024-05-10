@@ -28,7 +28,7 @@ function Dish() {
                     Id
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    titre
+                    Dish name
                 </th>
                 <th scope="col" class="px-6 py-3">
                     description

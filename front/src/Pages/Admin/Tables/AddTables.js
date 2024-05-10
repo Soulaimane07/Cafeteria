@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AdminNavbar from '../../../Components/Navbar/AdminNavbar'
 import Footer from '../../../Components/Footer/Footer'
 import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
-import Table from './Table' 
+
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa6";
 
@@ -47,7 +47,7 @@ function AddTables() {
             <article className='flex-1'>
           <header className='w-full mb-6 px-8 justify-between flex text-center items-center'>
               <div className='flex space-x-3 text-gray-800 '>
-              <Link to={"/admin/readUser"} className='flex px-4 border-2 text-gray-600 border-gray-200 rounded-sm items-center bg-white hover:border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all py-2 space-x-1'> 
+              <Link to={"/admin/tables"} className='flex px-4 border-2 text-gray-600 border-gray-200 rounded-sm items-center bg-white hover:border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all py-2 space-x-1'> 
                       <FaArrowLeft size={20} />
                   </Link>
                   <h1 className='text-2xl font-medium text-gray-800'> Add New Table </h1>
