@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 
 import Dashboard from './Pages/Admin/Dashboard/Dashboard';
 import ReadUsers from './Pages/Admin/Users/ReadUsers';
+import AddUsers from './Pages/Admin/Users/AddUsers';
 import ReadProduct from './Pages/Admin/Products/ReadProduct';
 import ReadCategories from './Pages/Admin/Categories/ReadCategories';
 import ReadTables from './Pages/Admin/Tables/ReadTables';
@@ -43,16 +44,17 @@ function App() {
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Signup />} />
-
-          <Route element={<AdminRoutes />}>
-            <Route path='/admin/dashboard' element={<Dashboard />} />
+          <Route path='/admin/dashboard' element={<Dashboard />} />
             <Route path='/admin/users' element={<ReadUsers />} />
+            <Route path='/admin/adduser' element={<AddUsers />} />
             <Route path='/admin/products' element={<ReadProduct />} />
             <Route path='/admin/categories' element={<ReadCategories />} />
             <Route path='/admin/tables' element={<ReadTables />} />
             <Route path='/admin/reservations' element={<ReadReservations/>} />
             <Route path='/admin/orders' element={<ReadOrders />} />
             <Route path='/admin/paiments' element={<ReadPaiment />} />
+          <Route element={<AdminRoutes />}>
+            
           </Route>
           
           <Route element={<ClientRoutes />}>

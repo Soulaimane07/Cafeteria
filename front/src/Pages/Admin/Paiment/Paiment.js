@@ -1,7 +1,6 @@
 import React from 'react'
 import { CiTrash } from 'react-icons/ci';
 import { BiEditAlt } from "react-icons/bi";
-import { IoAdd } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 function Paiment() {
     const paiments = []
