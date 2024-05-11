@@ -30,12 +30,15 @@ import AddCategory from './Pages/Admin/Categories/AddCategory';
 import EditTable from './Pages/Admin/Tables/EditTable';
 import EditDish from './Pages/Admin/Dishes/EditDish';
 import EditCategory from './Pages/Admin/Categories/EditCategory';
+import Added from './Components/Alerts/Added';
+import Order from './Pages/Client/Order/Order';
 
 
 
 function App() {
   const user = useSelector(state => state.User)
   const isOpened = useSelector(state => state.PageOrder.opened)
+  const isOpenedd = useSelector(state => state.AddedTo.oppened)
 
   const dispatch = useDispatch()
   
@@ -89,10 +92,12 @@ function App() {
             </Route>
             <Route path='/plats' element={<Plats />} />
             <Route path='/favorite' element={<Favorites />} />
+            <Route path='/order' element={<Order />} />
           </Route>
 
         </Routes>
         {isOpened && <PlatOrder />}
+        {isOpenedd && <Added />}
       </BrowserRouter>
     </div>
   );

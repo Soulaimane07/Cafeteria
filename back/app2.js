@@ -43,6 +43,9 @@ app.use('/plats', platsRoutes)
 const favoriteRoutes = require('./Controllers/FavoritesController2')
 app.use('/favorites', favoriteRoutes)
 
+const orderRoutes = require('./Controllers/OrderController2')
+app.use('/orders', orderRoutes)
+
 
 
 

@@ -3,18 +3,30 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IoClose } from "react-icons/io5";
 import { PageOrderActions } from '../../../Redux/Slices/PageOrder';
 import { serverUrl } from '../../../Components/Variables';
-import OrderButton2 from '../../../Components/Buttons/OrderButton2';
+import axios from 'axios';
+import { AddedToActions } from '../../../Redux/Slices/AddedToOrderSlice';
 
 function PlatOrder() {
     const dispatch = useDispatch()
     const plat = useSelector(state=> state.PageOrder.plat)
+    const user = useSelector(state => state.User)
+
 
     const Close = () => {
         dispatch(PageOrderActions.close())
     }
 
     const AddToOrder = () => {
-
+        axios.post(`${serverUrl}/orders/`, {plat: plat._id, user: user.data._id})
+            .then((res)=> {
+                dispatch(AddedToActions.open({data: "The dish is added to your order menu", "link": "/order"}))
+                setTimeout(() => {
+                    dispatch(AddedToActions.close())
+                }, 3000);
+            })
+            .catch(err=> {
+                console.error(err);
+            })
     }
 
   return (
