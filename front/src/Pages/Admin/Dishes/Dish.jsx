@@ -3,15 +3,17 @@ import { CiTrash } from 'react-icons/ci';
 import { BiEditAlt } from "react-icons/bi";
 import { IoAdd } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import { GetDishes } from '../../../Components/Functions';
 
 function Dish() {
-  const Products = []
+  const Dishes = GetDishes()
+  console.log(Dishes)
   return (
     
     <>
      <div className=' w-full border-2 border-gray-100 min-h-svh'>
      <header className='w-5/6 mb-8 mx-20 justify-between flex text-center'>
-                <h1 className='text-2xl font-medium'> Dishes ({Products?.length}) </h1>
+                <h1 className='text-2xl font-medium'> Dishes ({Dishes?.length}) </h1>
                 <Link to={"/admin/adddish"} className='flex items-center px-6 border-2 bg-hoverPrimaryColor  border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all  rounded-sm py-2 space-x-1'> 
                     <IoAdd size={20} />
                     <p> Dish </p>
@@ -48,24 +50,24 @@ function Dish() {
             </tr>
         </thead>
         <tbody>
-            {Products.map((Product,key)=>(<tr  class="bg-white border-b ">
+            {Dishes.map((Dishe,key)=>(<tr  class="bg-white border-b ">
                 <th  scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                    {Product.id}
+                    {Dishe.id}
                 </th>
                 <td class="px-6 py-4">
-                    {Product.titre}
+                    {Dishe.titre}
                 </td>
                 <td class="px-6 py-4">
-                    {Product.description}
+                    {Dishe.description}
                 </td>
                 <td class="px-6 py-4">
-                {Product.prix}
+                {Dishe.prix}
                 </td>
                 <td class="px-6 py-4">
-                {Product.categorie}
+                {Dishe.categorieId}
                 </td>
                 <td class="px-6 py-4">
-                {Product.day}
+                {Dishe.day}
                 </td>
                 <td class="px-6 py-4 ">
                 <Link to="">
