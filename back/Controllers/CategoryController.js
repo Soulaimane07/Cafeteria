@@ -9,12 +9,12 @@ class CategoryController {
 
     initializeRoutes() {
         this.router = router;
-        router.get('/', this.getAllDishes.bind(this));
-        router.post('/', this.createDish.bind(this));
-        router.get('/:userId', this.getDishById.bind(this));
-        router.patch('/:userId', this.updateDish.bind(this));
-        router.delete('/:userId', this.deleteDish.bind(this));
-        router.delete('/', this.deleteAllDishes.bind(this));
+        router.get('/', this.getAllCategories.bind(this));
+        router.post('/', this.createCategory.bind(this));
+        router.get('/:categoryId', this.getCategoryById.bind(this));
+        router.patch('/:categoryId', this.updateCategory.bind(this));
+        router.delete('/:categoryId', this.deleteCategory.bind(this));
+        router.delete('/', this.deleteAllCategories.bind(this));
     }
 
     async getAllCategories(req, res, next) {

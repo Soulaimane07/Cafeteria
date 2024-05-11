@@ -34,7 +34,7 @@ class FavoritController {
     async createFavorit(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`INSERT INTO favorits (clientId,platId) VALUES ('${req.body.clientId}', '${req.body.platId}')`, (err, records)=> {
+            request.query(`INSERT INTO favorits (clientId,dishId) VALUES ('${req.body.clientId}', '${req.body.dishId}')`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records });

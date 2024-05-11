@@ -19,6 +19,7 @@ import ReadOrders from './Pages/Admin/Orders/ReadOrders';
 import ReadPaiment from './Pages/Admin/Paiment/ReadPaiment';
 import AddTables from './Pages/Admin/Tables/AddTables';
 import AddDish from './Pages/Admin/Dishes/AddDish';
+import EditUsers from './Pages/Admin/Users/EditUsers';
 
 function App() {
   const user = useSelector(state => state.User)
@@ -49,6 +50,7 @@ function App() {
           <Route path='/admin/dashboard' element={<Dashboard />} />
             <Route path='/admin/users' element={<ReadUsers />} />
             <Route path='/admin/adduser' element={<AddUsers />} />
+            <Route path='/admin/edituser' element={<EditUsers />} />
             <Route path='/admin/dishes' element={<ReadDish />} />
             <Route path='/admin/adddish' element={<AddDish />} />
             <Route path='/admin/categories' element={<ReadCategories />} />
