@@ -4,12 +4,12 @@ import Footer from '../../../Components/Footer/Footer'
 import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
 import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaUpDown } from "react-icons/fa6";
-import GetDish from '../Dishes/Dish'
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { IoIosClose } from 'react-icons/io';
 
+import { GetCategorie } from '../../../Components/Functions'
 const Buttons = ({createFun, condittion}) => {
     return(
         <div className='flex space-x-2 items-stretch'>
@@ -25,8 +25,8 @@ const Buttons = ({createFun, condittion}) => {
 function EditCategory() {
     let { id } = useParams();
     const navigate = useNavigate();
-    const Categorie = {}
-    console.log(Categorie)
+    const Categorie = GetCategorie(id)
+    
     const [titre, setTitre] = useState('')
     const [image, setImage] = useState(null)
     

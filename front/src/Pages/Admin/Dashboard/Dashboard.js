@@ -10,25 +10,32 @@ import { FaRegUser } from "react-icons/fa";
 import { MdOutlineTableBar } from "react-icons/md";
 import { BiCategory } from "react-icons/bi";
 import { MdAttachMoney } from "react-icons/md";
+import { GetCategories, GetDishes, GetOrders, GetReservations, GetTables, GetUsers } from '../../../Components/Functions'
 function Dashboard() {
+  const Tables = GetTables()
+  const Users=GetUsers()
+  const Categories=GetCategories()
+  const Dishes=GetDishes()
+  const Orders=GetOrders()
+  const Reservations=GetReservations()
   const list =[
     {
         image: <FaRegUser size={40} />,
         title: "Users",
-        stats:"",
+        stats:Users.length,
         link:"../../admin/readuser"
        
     },
     {
         image: <IoRestaurantOutline size={40} />,
         title: "Dishes",
-        stats:"",
+        stats:Dishes.length,
         link:"../../admin/readDish"
     },
     {
         image: <BiCategory size={40} />,
         title: "Catrgories",
-        stats: "",
+        stats: Categories.length,
         link:"../../admin/readcategorie"
        
        
@@ -36,19 +43,19 @@ function Dashboard() {
     {
       image: <IoCartOutline size={40} />,
       title: "Orders",
-      stats: "",
+      stats: Orders.length,
       link:"../../admin/readcategorie"
   },
   {
     image: <MdOutlineTableBar size={40} />,
     title: "Tables",
-    stats: "",
+    stats: Tables.length,
     link:"../../admin/readcategorie"
 },
   {
     image: <RiBillLine size={40} />,
     title: "Reservations",
-    stats: "",
+    stats: Reservations.length,
     link:"../../admin/readcategorie"
 },
 {

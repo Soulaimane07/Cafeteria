@@ -63,7 +63,7 @@ function App() {
             <Route path='/admin/adddish' element={<AddDish />} />
             <Route path='/admin/categories' element={<ReadCategories />} />
             <Route path='/admin/addcategory' element={<AddCategory />} />
-            <Route path='/admin/editcategory' element={<EditCategory />} />
+            <Route path='/admin/editcategory/:id' element={<EditCategory />} />
             <Route path='/admin/tables' element={<ReadTables />} />
             <Route path='/admin/addtable' element={<AddTables />} />
             <Route path='/admin/edittable' element={<EditTable />} />

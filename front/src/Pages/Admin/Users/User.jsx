@@ -4,11 +4,12 @@ import { CiTrash } from 'react-icons/ci';
 import { BiEditAlt } from "react-icons/bi";
 import { IoAdd } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import { GetUsers } from '../../../Components/Functions';
 
 
 function User() {
    
-    const users = [{"id":1,"lname":"last","fname":"pilot","email":"hamza@gmail.com","password":"123456","role":"client"}]
+    const users = GetUsers()
  
     console.log(users)
     
