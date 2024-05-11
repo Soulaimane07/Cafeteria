@@ -1,17 +1,14 @@
-import Navbar from '../../Components/Navbar/Navbar'
-import Footer from '../../Components/Footer/Footer'
-import Sidebar from '../../Components/Sidebar/Sidebar'
+import Navbar from '../../../Components/Navbar/Navbar'
+import Footer from '../../../Components/Footer/Footer'
+import Sidebar from '../../../Components/Sidebar/Sidebar'
 import Header from './Header'
 import Categorie from './Categorie'
-import { PageTitle } from '../../Components/Functions'
-import { serverUrl } from "../../Components/Variables";
+import { PageTitle } from '../../../Components/Functions'
+import { serverUrl } from "../../../Components/Variables";
 
 
 function Home() {
   PageTitle('Cafeteria | Home')
-
-
-  
 
   return (
     <>

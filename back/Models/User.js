@@ -12,7 +12,8 @@ const userSchema = mongoose.Schema({
     pass: {
         type: String,
         required: true
-    }
+    },
+    role: String
 })
 
 module.exports = mongoose.model('User', userSchema)
