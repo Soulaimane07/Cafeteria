@@ -32,12 +32,23 @@ app.use('/users', userController);
 const paimentsController = require('./Controllers/PaimentController')
 app.use('/paiments', paimentsController)
 
-const categorieRoutes = require('./Controllers/CategorieController')
-app.use('/categorie', categorieRoutes)
+const favoritsRoutes = require('./Controllers/FavoritController')
+app.use('/favorits', favoritsRoutes)
 
-const platRoutes = require('./Controllers/PlatController')
-app.use('/plat', platRoutes)
+const ordersRoutes = require('./Controllers/OrderController')
+app.use('/orders', ordersRoutes)
 
+const dishesRoutes = require('./Controllers/DishController')
+app.use('/dishes', dishesRoutes)
+
+const categoriesRoutes = require('./Controllers/CategoryController')
+app.use('/categories', categoriesRoutes)
+
+const tablesRoutes = require('./Controllers/TableController')
+app.use('/tables', tablesRoutes)
+
+const reservationsRoutes = require('./Controllers/ReservationController')
+app.use('/reservations', reservationsRoutes)
 
 
 
