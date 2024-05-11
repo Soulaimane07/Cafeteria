@@ -20,6 +20,11 @@ import ReadPaiment from './Pages/Admin/Paiment/ReadPaiment';
 import AddTables from './Pages/Admin/Tables/AddTables';
 import AddDish from './Pages/Admin/Dishes/AddDish';
 import EditUsers from './Pages/Admin/Users/EditUsers';
+import AddCategory from './Pages/Admin/Categories/AddCategory';
+import EditTable from './Pages/Admin/Tables/EditTable';
+import EditDish from './Pages/Admin/Dishes/EditDish';
+
+
 
 function App() {
   const user = useSelector(state => state.User)
@@ -54,11 +59,17 @@ function App() {
             <Route path='/admin/dishes' element={<ReadDish />} />
             <Route path='/admin/adddish' element={<AddDish />} />
             <Route path='/admin/categories' element={<ReadCategories />} />
+            <Route path='/admin/addcategory' element={<AddCategory />} />
             <Route path='/admin/tables' element={<ReadTables />} />
+            <Route path='/admin/addtable' element={<AddTables />} />
+            <Route path='/admin/edittable' element={<EditTable />} />
             <Route path='/admin/reservations' element={<ReadReservations/>} />
             <Route path='/admin/orders' element={<ReadOrders />} />
             <Route path='/admin/paiments' element={<ReadPaiment />} />
-            <Route path='/admin/addtable' element={<AddTables />} />
+            <Route path='/admin/editdish' element={<EditDish />} />
+            
+            
+            
           <Route element={<AdminRoutes />}>
             
           </Route>
