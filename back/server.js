@@ -8,11 +8,6 @@ const port = process.env.PORT || 3005
 const server = http.createServer(app)
 
 
-
-
-
-
-
 sql.connect(config).then(() => {
     server.listen(port, function(error){
         if(error){

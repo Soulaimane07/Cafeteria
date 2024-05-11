@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Login from './Pages/Auth/Login';
 import Signup from './Pages/Auth/Signup';
-import Home from './Pages/Home/Home';
 import {AdminRoutes, ClientRoutes} from './Components/ProtectedRoutes';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserActions } from './Redux/Slices/UserSlice';
@@ -17,6 +16,9 @@ import ReadTables from './Pages/Admin/Tables/ReadTables';
 import ReadReservations from './Pages/Admin/Reservations/ReadReservations';
 import ReadOrders from './Pages/Admin/Orders/ReadOrders';
 import ReadPaiment from './Pages/Admin/Paiment/ReadPaiment';
+import Home from './Pages/Client/Home/Home';
+import Categories from './Pages/Client/Categories/Categories';
+import CategorieDetails from './Pages/Client/Categories/CategorieDetails';
 import AddTables from './Pages/Admin/Tables/AddTables';
 import AddDish from './Pages/Admin/Dishes/AddDish';
 import EditUsers from './Pages/Admin/Users/EditUsers';
@@ -76,6 +78,10 @@ function App() {
           
           <Route element={<ClientRoutes />}>
             <Route path='/' element={<Home />} />
+            <Route path='/categories'>
+              <Route index element={<Categories />} />
+              <Route path=':categorieId' element={<CategorieDetails />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

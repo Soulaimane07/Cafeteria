@@ -7,10 +7,9 @@ const platSchema = mongoose.Schema({
     image: String,
     prix: Number,
     categorie: {
-         type: mongoose.Schema.Types.ObjectId,
-         ref: "categorie",
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Categorie",
     },
 })
 
-module.exports = mongoose.model('Categorie', categorieSchema)
+module.exports = mongoose.model('Plat', platSchema)
