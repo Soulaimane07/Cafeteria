@@ -22,10 +22,14 @@ import CategorieDetails from './Pages/Client/Categories/CategorieDetails';
 import AddTables from './Pages/Admin/Tables/AddTables';
 import AddDish from './Pages/Admin/Dishes/AddDish';
 import EditUsers from './Pages/Admin/Users/EditUsers';
+import Plats from './Pages/Client/Plats/Plats';
+import { getFavorits } from './Redux/Slices/FavoriteSlice';
+import Favorites from './Pages/Client/Favorites/Favorites';
+import PlatOrder from './Pages/Client/Plats/PlatOrder';
 
 function App() {
   const user = useSelector(state => state.User)
-  console.log(user);
+  const isOpened = useSelector(state => state.PageOrder.opened)
 
   const dispatch = useDispatch()
   
@@ -34,6 +38,7 @@ function App() {
 
     if(user) {
       dispatch(UserActions.login(user))
+      dispatch(getFavorits(user?._id))
     } else {
       dispatch(UserActions.logout())
     }
@@ -49,7 +54,9 @@ function App() {
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Signup />} />
-          <Route path='/admin/dashboard' element={<Dashboard />} />
+          
+          <Route element={<AdminRoutes />}>
+            <Route path='/admin/dashboard' element={<Dashboard />} />
             <Route path='/admin/users' element={<ReadUsers />} />
             <Route path='/admin/adduser' element={<AddUsers />} />
             <Route path='/admin/edituser' element={<EditUsers />} />
@@ -61,8 +68,6 @@ function App() {
             <Route path='/admin/orders' element={<ReadOrders />} />
             <Route path='/admin/paiments' element={<ReadPaiment />} />
             <Route path='/admin/addtable' element={<AddTables />} />
-          <Route element={<AdminRoutes />}>
-            
           </Route>
           
           <Route element={<ClientRoutes />}>
@@ -71,8 +76,12 @@ function App() {
               <Route index element={<Categories />} />
               <Route path=':categorieId' element={<CategorieDetails />} />
             </Route>
+            <Route path='/plats' element={<Plats />} />
+            <Route path='/favorite' element={<Favorites />} />
           </Route>
+
         </Routes>
+        {isOpened && <PlatOrder />}
       </BrowserRouter>
     </div>
   );

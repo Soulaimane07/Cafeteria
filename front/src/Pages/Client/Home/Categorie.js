@@ -17,8 +17,8 @@ function Categorie() {
           {categorieslist?.map((item,key)=>(
               key < 10 &&(
                 <Link to={`/categories/${item._id}`} key={key}> 
-                  <div className=' bg-white p-6 rounded-full hover:bg-primaryColor transition-all'> 
-                    <img className='w-12' src={`${serverUrl}/${item.image}`} alt={item.image} />
+                  <div className=' bg-white p-8 rounded-full hover:bg-primaryColor transition-all'> 
+                    <img className='w-16' src={`${serverUrl}/${item.image}`} alt={item.image} />
                   </div>
                   <h1 className='text-center mt-2 font-medium'> {item.titre} </h1> 
                 </Link>

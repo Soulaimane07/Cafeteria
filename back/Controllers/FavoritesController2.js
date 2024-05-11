@@ -2,11 +2,11 @@ const express = require("express")
 const router = express.Router()
 const mongoose = require('mongoose')
 
-const Categorie = require('../Models/Categorie')
+const Favorite = require('../Models/Favorite')
 
 router.get('/', (req, res, next) => {
-    Categorie.find()
-        .select('_id titre image ')
+    Favorite.find()
+        .select('_id user plat')
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -20,14 +20,13 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-    console.log(req.body);
-    const categorie = new Categorie({
+    const favorite = new Favorite({
         _id: new mongoose.Types.ObjectId(),
-        titre: req.body.titre,
-        image: req.body.image,
+        user: req.body.user,
+        plat: req.body.plat,
     })
 
-    categorie.save()
+    favorite.save()
         .then(docs => {
             res.status(201).json({status: "success", data: docs})
         })
@@ -37,11 +36,27 @@ router.post('/', (req, res, next) => {
         })
 })
 
-router.get('/:categorieId', (req, res, next) => {
-    const categorieId = req.params.categorieId
+router.post('/isfavorated', (req, res, next) => {
+    let user = req.body.user
+    let plat = req.body.plat
 
-    Categorie.find({_id: categorieId})
-        .select("_id titre image")
+    Favorite.find({user: user, plat: plat})
+        .then(docs => {
+            res.status(200).json({status: "success", data: docs.length === 0 ? false : docs[0]})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({error: err})
+        })
+})
+
+router.get('/:userId', (req, res, next) => {
+    const userId = req.params.userId
+
+    Favorite.find({user: userId})
+        .select("_id user plat")
+        .populate('user')
+        .populate('plat')
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -52,31 +67,10 @@ router.get('/:categorieId', (req, res, next) => {
         })
 })
 
-router.patch('/:categorieId', (req, res, next) => {
-    const categorieId = req.params.categorieId
+router.delete('/:favoriteId', (req, res, next) => {
+    const favoriteId = req.params.favoriteId
 
-    const UpdateCategorie = {
-        titre: req.body.titre,
-        image: req.body.image,
-    }
-
-    Categorie.updateOne({_id: categorieId}, {$set: UpdateCategorie})
-        .exec()
-        .then(docs => {
-            res.status(200).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
-})
-
-router.delete('/:categorieId', (req, res, next) => {
-    const categorieId = req.params.categorieId
-   
-    Categorie.deleteOne({_id: categorieId})
+    Favorite.deleteOne({_id: favoriteId})
         .exec()
         .then(result => {
             res.status(200).json(result)
@@ -88,3 +82,19 @@ router.delete('/:categorieId', (req, res, next) => {
             })
         })
 })
+
+router.delete('/', (req, res, next) => {
+    Favorite.deleteMany()
+        .exec()
+        .then(result => {
+            res.status(200).json(result)
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            })
+        })
+})
+
+module.exports = router

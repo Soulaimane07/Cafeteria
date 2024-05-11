@@ -9,14 +9,41 @@
   p {
     opacity: 0;
     position: absolute;
-    left: 40px;
+    left: 100px;
     transition: all 300ms;
+    font-size: 14px;
   }
   &:hover {
     p {
-      opacity: 100;
+      opacity: 60%;
       transition: all 300ms;
       left: 130px;
     }
   }
+}
+
+.Link.Plats {
+  p {
+    opacity: 0;
+    position: absolute;
+    left: 40px;
+    transition: all 300ms;
+    font-size: 14px;
+  }
+  &:hover {
+    p {
+      opacity: 60%;
+      transition: all 300ms;
+      left: 60px;
+    }
+  }
+}
+
+
+.Glass {
+  background: rgba(0, 0, 0, 0.43);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.2px);
+  -webkit-backdrop-filter: blur(7.2px);
+  border: 1px solid rgba(0, 0, 0, 0.3);
 }
