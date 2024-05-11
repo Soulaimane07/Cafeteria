@@ -2,26 +2,26 @@ const express = require("express");
 const router = express.Router();
 const sql = require('mssql');
 
-class UserController {
+class OrderController {
     constructor() {
         this.initializeRoutes();
     }
 
     initializeRoutes() {
         this.router = router;
-        router.get('/', this.getAllUsers.bind(this));
-        router.post('/', this.createUser.bind(this));
-        router.get('/:userId', this.getUserById.bind(this));
-        router.post('/login', this.loginUser.bind(this));
-        router.patch('/:userId', this.updateUser.bind(this));
-        router.delete('/:userId', this.deleteUser.bind(this));
-        router.delete('/', this.deleteAllUsers.bind(this));
+        router.get('/', this.getAllOrders.bind(this));
+        router.post('/', this.createOrder.bind(this));
+        router.get('/:orderId', this.getOrderById.bind(this));
+        router.patch('/:orderId', this.updateOrder.bind(this));
+        router.delete('/:orderId', this.deleteOrder.bind(this));
+        router.delete('/', this.deleteAllOrders.bind(this));
+        router.get('/:userId', this.getOrderByClient.bind(this));
     }
 
-    async getAllUsers(req, res, next) {
+    async getAllOrders(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query("select * from users", (err, records)=> {
+            request.query("select * from orders", (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -33,10 +33,10 @@ class UserController {
         }
     }
 
-    async createUser(req, res, next) {
+    async createOrder(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`INSERT INTO users (email, fname, lname, pass, role) VALUES ('${req.body.email}', '${req.body.fname}', '${req.body.lname}', '${req.body.pass}', 'client')`, (err, records)=> {
+            request.query(`INSERT INTO orders (clientId,dishId) VALUES ('${req.body.clientId}', '${req.body.dishId}')`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records });
@@ -48,12 +48,12 @@ class UserController {
         }
     }
 
-    async getUserById(req, res, next) {
+    async getOrderById(req, res, next) {
         try {
-            const userId = req.params.userId;
+            const orderId = req.params.orderId;
 
             let request = new sql.Request();
-            request.query(`select * from users where id=${userId}`, (err, records)=> {
+            request.query(`select * from orders where id=${orderId}`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -65,19 +65,15 @@ class UserController {
         }
     }
 
-    async loginUser(req, res, next) {
+    async getOrderByClient(req, res, next) {
         try {
-            const email = req.body.email;
-            const pass = req.body.pass;
-
+            const userId = req.params.userId;
 
             let request = new sql.Request();
-            request.query(`select * from users where email='${email}' and pass='${pass}'`, (err, records)=> {
-                if(err){
-                    res.status(400).json();
-                    console.log(err);
-                } else {
-                    res.status(200).json({ status: "success", data: records.recordset[0] });
+            request.query(`select * from orders where clientId=${userId}`, (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0] });
                 }
             })
         } catch (error) {
@@ -86,28 +82,28 @@ class UserController {
         }
     }
 
-    async updateUser(req, res, next) {
+    async updateOrder(req, res, next) {
         try {
-            const userId = req.params.userId;
+            const orderId = req.params.orderId;
 
             const updateOps = {};
             for (const ops of req.body) {
                 updateOps[ops.propName] = ops.value;
             }
 
-            res.status(200).json({ status: "success", message: "User updated" });
+            res.status(200).json({ status: "success", message: "Order updated" });
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: error });
         }
     }
 
-    async deleteUser(req, res, next) {
+    async deleteOrder(req, res, next) {
         try {
-            const userId = req.params.userId;
+            const orderId = req.params.orderId;
 
             let request = new sql.Request();
-            request.query(`delete from users where id='${userId}'`, (err, records)=> {
+            request.query(`delete from orders where id='${orderId}'`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -121,10 +117,10 @@ class UserController {
         }
     }
 
-    async deleteAllUsers(req, res, next) {
+    async deleteAllOrders(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`delete from users`, (err, records)=> {
+            request.query(`delete from orders`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -139,4 +135,4 @@ class UserController {
     }
 }
 
-module.exports = new UserController().router;
+module.exports = new OrderController().router;

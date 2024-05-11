@@ -2,26 +2,25 @@ const express = require("express");
 const router = express.Router();
 const sql = require('mssql');
 
-class UserController {
+class CategoryController {
     constructor() {
         this.initializeRoutes();
     }
 
     initializeRoutes() {
         this.router = router;
-        router.get('/', this.getAllUsers.bind(this));
-        router.post('/', this.createUser.bind(this));
-        router.get('/:userId', this.getUserById.bind(this));
-        router.post('/login', this.loginUser.bind(this));
-        router.patch('/:userId', this.updateUser.bind(this));
-        router.delete('/:userId', this.deleteUser.bind(this));
-        router.delete('/', this.deleteAllUsers.bind(this));
+        router.get('/', this.getAllCategories.bind(this));
+        router.post('/', this.createCategory.bind(this));
+        router.get('/:categoryId', this.getCategoryById.bind(this));
+        router.patch('/:categoryId', this.updateCategory.bind(this));
+        router.delete('/:categoryId', this.deleteCategory.bind(this));
+        router.delete('/', this.deleteAllCategories.bind(this));
     }
 
-    async getAllUsers(req, res, next) {
+    async getAllCategories(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query("select * from users", (err, records)=> {
+            request.query("select * from categories", (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -33,10 +32,10 @@ class UserController {
         }
     }
 
-    async createUser(req, res, next) {
+    async createCategory(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`INSERT INTO users (email, fname, lname, pass, role) VALUES ('${req.body.email}', '${req.body.fname}', '${req.body.lname}', '${req.body.pass}', 'client')`, (err, records)=> {
+            request.query(`INSERT INTO categories (titre,image) VALUES ('${req.body.titre}', '${req.body.image}')`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records });
@@ -48,12 +47,12 @@ class UserController {
         }
     }
 
-    async getUserById(req, res, next) {
+    async getCategoryById(req, res, next) {
         try {
-            const userId = req.params.userId;
+            const categoryId = req.params.categoryId;
 
             let request = new sql.Request();
-            request.query(`select * from users where id=${userId}`, (err, records)=> {
+            request.query(`select * from categories where id=${categoryId}`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -65,30 +64,9 @@ class UserController {
         }
     }
 
-    async loginUser(req, res, next) {
+    async updateCategory(req, res, next) {
         try {
-            const email = req.body.email;
-            const pass = req.body.pass;
-
-
-            let request = new sql.Request();
-            request.query(`select * from users where email='${email}' and pass='${pass}'`, (err, records)=> {
-                if(err){
-                    res.status(400).json();
-                    console.log(err);
-                } else {
-                    res.status(200).json({ status: "success", data: records.recordset[0] });
-                }
-            })
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({ error: error });
-        }
-    }
-
-    async updateUser(req, res, next) {
-        try {
-            const userId = req.params.userId;
+            const categoryId = req.params.categoryId;
 
             const updateOps = {};
             for (const ops of req.body) {
@@ -102,12 +80,12 @@ class UserController {
         }
     }
 
-    async deleteUser(req, res, next) {
+    async deleteCategory(req, res, next) {
         try {
-            const userId = req.params.userId;
+            const categoryId = req.params.categoryId;
 
             let request = new sql.Request();
-            request.query(`delete from users where id='${userId}'`, (err, records)=> {
+            request.query(`delete from categories where id='${categoryId}'`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -121,10 +99,10 @@ class UserController {
         }
     }
 
-    async deleteAllUsers(req, res, next) {
+    async deleteAllCategories(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`delete from users`, (err, records)=> {
+            request.query(`delete from categories`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -139,4 +117,4 @@ class UserController {
     }
 }
 
-module.exports = new UserController().router;
+module.exports = new CategoryController().router;

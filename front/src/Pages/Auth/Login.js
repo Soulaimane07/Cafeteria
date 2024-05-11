@@ -1,12 +1,17 @@
 import React, { useState } from 'react'
 import Auth from './Auth'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { LoadingBtn } from '../../Components/Buttons'
 import { serverUrl } from '../../Components/Variables'
 import { PageTitle } from '../../Components/Functions'
+import { useDispatch } from 'react-redux'
+import { UserActions } from '../../Redux/Slices/UserSlice'
 
 function Login() {
     PageTitle('Cafeteria | Login')
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
@@ -28,8 +33,9 @@ function Login() {
         )
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 setLoading(false)
+                dispatch(UserActions.login(data.data))
+                navigate('/')
             })
             .catch(error => {
                 console.error(error)
@@ -40,14 +46,14 @@ function Login() {
   return (
     <main className='flex h-screen overflow-hidden items-center'>
         <section className='w-1/2 px-32'>
-            <img src="../images/logo.jpg" className='w-52 mx-auto' />
+            <img src="../images/logo.jpg" className='w-52 mx-auto' alt='logo' />
 
             <h1 className=' text-gray-800 uppercase font-bold text-xl text-left'> Welcome </h1>
 
             <form onSubmit={LoginFun} className="mt-6">
                 <div className="mb-5">
                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-800">Email Adress</label>
-                    <input type="email" onChange={(e)=> setEmail(e.target.value)} id="email" className="bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="name@flowbite.com" />
+                    <input type="email" onChange={(e)=> setEmail(e.target.value)} id="email" className="bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                 </div>
                 <div className="mb-5">
                     <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-800">Password</label>

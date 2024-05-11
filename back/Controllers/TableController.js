@@ -2,26 +2,25 @@ const express = require("express");
 const router = express.Router();
 const sql = require('mssql');
 
-class UserController {
+class TableController {
     constructor() {
         this.initializeRoutes();
     }
 
     initializeRoutes() {
         this.router = router;
-        router.get('/', this.getAllUsers.bind(this));
-        router.post('/', this.createUser.bind(this));
-        router.get('/:userId', this.getUserById.bind(this));
-        router.post('/login', this.loginUser.bind(this));
-        router.patch('/:userId', this.updateUser.bind(this));
-        router.delete('/:userId', this.deleteUser.bind(this));
-        router.delete('/', this.deleteAllUsers.bind(this));
+        router.get('/', this.getAllTables.bind(this));
+        router.post('/', this.createTable.bind(this));
+        router.get('/:tableId', this.getTableById.bind(this));
+        router.patch('/:tableId', this.updateTable.bind(this));
+        router.delete('/:tableId', this.deleteTable.bind(this));
+        router.delete('/', this.deleteAllTables.bind(this));
     }
 
-    async getAllUsers(req, res, next) {
+    async getAllTables(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query("select * from users", (err, records)=> {
+            request.query("select * from tables", (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -33,10 +32,10 @@ class UserController {
         }
     }
 
-    async createUser(req, res, next) {
+    async createTable(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`INSERT INTO users (email, fname, lname, pass, role) VALUES ('${req.body.email}', '${req.body.fname}', '${req.body.lname}', '${req.body.pass}', 'client')`, (err, records)=> {
+            request.query(`INSERT INTO tables (capacite,image, disponibilite) VALUES ('${req.body.capacite}', '${req.body.image}', '${req.body.disponibilite}')`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records });
@@ -48,12 +47,12 @@ class UserController {
         }
     }
 
-    async getUserById(req, res, next) {
+    async getTableById(req, res, next) {
         try {
-            const userId = req.params.userId;
+            const tableId = req.params.tableId;
 
             let request = new sql.Request();
-            request.query(`select * from users where id=${userId}`, (err, records)=> {
+            request.query(`select * from tables where id=${tableId}`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -65,36 +64,14 @@ class UserController {
         }
     }
 
-    async loginUser(req, res, next) {
+    async updateTable(req, res, next) {
         try {
-            const email = req.body.email;
-            const pass = req.body.pass;
-
-
-            let request = new sql.Request();
-            request.query(`select * from users where email='${email}' and pass='${pass}'`, (err, records)=> {
-                if(err){
-                    res.status(400).json();
-                    console.log(err);
-                } else {
-                    res.status(200).json({ status: "success", data: records.recordset[0] });
-                }
-            })
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({ error: error });
-        }
-    }
-
-    async updateUser(req, res, next) {
-        try {
-            const userId = req.params.userId;
+            const tableId = req.params.tableId;
 
             const updateOps = {};
             for (const ops of req.body) {
                 updateOps[ops.propName] = ops.value;
             }
-
             res.status(200).json({ status: "success", message: "User updated" });
         } catch (error) {
             console.log(error);
@@ -102,12 +79,12 @@ class UserController {
         }
     }
 
-    async deleteUser(req, res, next) {
+    async deleteTable(req, res, next) {
         try {
-            const userId = req.params.userId;
+            const tableId = req.params.tableId;
 
             let request = new sql.Request();
-            request.query(`delete from users where id='${userId}'`, (err, records)=> {
+            request.query(`delete from tables where id='${tableId}'`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -121,10 +98,10 @@ class UserController {
         }
     }
 
-    async deleteAllUsers(req, res, next) {
+    async deleteAllTables(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`delete from users`, (err, records)=> {
+            request.query(`delete from tables`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -138,5 +115,4 @@ class UserController {
         }
     }
 }
-
-module.exports = new UserController().router;
+module.exports = new TableController().router;

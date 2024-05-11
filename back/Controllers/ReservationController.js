@@ -2,24 +2,23 @@ const express = require("express");
 const router = express.Router();
 const sql = require('mssql');
 
-class FavoritController {
+class ReservationController {
     constructor() {
         this.initializeRoutes();
     }
 
     initializeRoutes() {
         this.router = router;
-        router.get('/', this.getAllFavorits.bind(this));
-        router.post('/', this.createFavorit.bind(this));
-        router.get('/:userId', this.getFavoritByClient.bind(this));
-        router.delete('/:favoritId', this.deleteFavorit.bind(this));
-        router.delete('/', this.deleteAllFavorits.bind(this));
+        router.get('/', this.getAllReservations.bind(this));
+        router.post('/', this.createReservation.bind(this));
+        router.get('/:reservationId', this.getReservationById.bind(this));
+        router.delete('/:reservationId', this.deleteReservation.bind(this));
     }
 
-    async getAllFavorits(req, res, next) {
+    async getAllReservations(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query("select * from favorits", (err, records)=> {
+            request.query("select * from reservations", (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -31,10 +30,10 @@ class FavoritController {
         }
     }
 
-    async createFavorit(req, res, next) {
+    async createReservation(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`INSERT INTO favorits (clientId,dishId) VALUES ('${req.body.clientId}', '${req.body.dishId}')`, (err, records)=> {
+            request.query(`INSERT INTO reservations (clientId,tableId) VALUES ('${req.body.clientId}', '${req.body.tableId}')`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records });
@@ -46,12 +45,12 @@ class FavoritController {
         }
     }
 
-    async getFavoritByClient(req, res, next) {
+    async getReservationById(req, res, next) {
         try {
-            const userId = req.params.userId;
+            const reservationId = req.params.reservationId;
 
             let request = new sql.Request();
-            request.query(`select * from favorits where userid=${userId}`, (err, records)=> {
+            request.query(`select * from reservations where id=${reservationId}`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -63,12 +62,14 @@ class FavoritController {
         }
     }
 
-    async deleteFavorit(req, res, next) {
+ 
+
+    async deleteReservation(req, res, next) {
         try {
-            const favoritId = req.params.favoritId;
+            const reservationId = req.params.reservationId;
 
             let request = new sql.Request();
-            request.query(`delete from favorits where id='${favoritId}'`, (err, records)=> {
+            request.query(`delete from reservations where id='${reservationId}'`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -81,23 +82,6 @@ class FavoritController {
             res.status(500).json({ error: error });
         }
     }
-
-    async deleteAllFavorits(req, res, next) {
-        try {
-            let request = new sql.Request();
-            request.query(`delete from favorits`, (err, records)=> {
-                if(err){
-                    res.status(400).json();
-                    console.log(err);
-                } else {
-                    res.status(200).json({ status: "success"});
-                }
-            })
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({ error: error });
-        }
-    }
 }
 
-module.exports = new FavoritController().router;
+module.exports = new ReservationController().router;
