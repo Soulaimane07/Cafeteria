@@ -59,7 +59,7 @@ function Sidebar() {
   return (
     <section className=' w-1/5 px-10 py-10'>
         <Link to={'/'} className="flex justify-center">
-            <img src="../images/logo.jpg" className='w-40' />
+            <img src="../../images/logo.jpg" className='w-40' />
         </Link>
 
         <ul className='flex flex-col space-y-3 mt-6'>

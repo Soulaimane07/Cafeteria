@@ -4,8 +4,10 @@ import { CiTrash } from 'react-icons/ci';
 import { BiEditAlt } from "react-icons/bi";
 import { IoAdd } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+
+import { GetCategories } from '../../../Components/Functions'
 function Category() {
-    const categories = []
+    let categories = GetCategories()
  
     
     
@@ -50,7 +52,7 @@ function Category() {
                   </td>
                  
                   <td class="px-6 py-4 ">
-                  <Link to=''>
+                  <Link to={`/admin/editcategory/${list.id}`}>
                   <button  className=' opacity-40 hover:opacity-100 hover:text-blue-600 transition-all mr-4 '>
                       <BiEditAlt size={25} />
                   </button>

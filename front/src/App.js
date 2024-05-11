@@ -26,6 +26,12 @@ import Plats from './Pages/Client/Plats/Plats';
 import { getFavorits } from './Redux/Slices/FavoriteSlice';
 import Favorites from './Pages/Client/Favorites/Favorites';
 import PlatOrder from './Pages/Client/Plats/PlatOrder';
+import AddCategory from './Pages/Admin/Categories/AddCategory';
+import EditTable from './Pages/Admin/Tables/EditTable';
+import EditDish from './Pages/Admin/Dishes/EditDish';
+import EditCategory from './Pages/Admin/Categories/EditCategory';
+
+
 
 function App() {
   const user = useSelector(state => state.User)
@@ -63,11 +69,16 @@ function App() {
             <Route path='/admin/dishes' element={<ReadDish />} />
             <Route path='/admin/adddish' element={<AddDish />} />
             <Route path='/admin/categories' element={<ReadCategories />} />
+            <Route path='/admin/addcategory' element={<AddCategory />} />
+            <Route path='/admin/editcategory/:id' element={<EditCategory />} />
             <Route path='/admin/tables' element={<ReadTables />} />
+            <Route path='/admin/addtable' element={<AddTables />} />
+            <Route path='/admin/edittable' element={<EditTable />} />
             <Route path='/admin/reservations' element={<ReadReservations/>} />
             <Route path='/admin/orders' element={<ReadOrders />} />
             <Route path='/admin/paiments' element={<ReadPaiment />} />
             <Route path='/admin/addtable' element={<AddTables />} />
+            <Route path='/admin/editdish' element={<EditDish />} />
           </Route>
           
           <Route element={<ClientRoutes />}>

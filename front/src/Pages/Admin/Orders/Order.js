@@ -3,9 +3,10 @@ import { CiTrash } from 'react-icons/ci';
 import { BiEditAlt } from "react-icons/bi";
 import { IoAdd } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import { GetOrders } from '../../../Components/Functions';
 function Order() {
-    const orders = []
- 
+    const orders = GetOrders()
+ console.log(orders)
     
     
     return (
@@ -31,7 +32,10 @@ function Order() {
                      Id Client
                   </th>
                   <th scope="col" class="px-6 py-3">
-                     Id Plat
+                     Id Dish
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                     Order Date
                   </th>
                   <th scope="col" class="px-6 py-3">
                       Action
@@ -44,7 +48,13 @@ function Order() {
                       {list.id}
                   </th>
                   <td class="px-6 py-4">
-                      {list.titre}
+                      {list.clientId}
+                  </td>
+                  <td class="px-6 py-4">
+                      {list.dishId}
+                  </td>
+                  <td class="px-6 py-4">
+                      {list.order_date}
                   </td>
                  
                   <td class="px-6 py-4 ">

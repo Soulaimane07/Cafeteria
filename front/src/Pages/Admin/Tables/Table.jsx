@@ -3,8 +3,10 @@ import { CiTrash } from 'react-icons/ci';
 import { BiEditAlt } from "react-icons/bi";
 import { IoAdd } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import { GetTables } from '../../../Components/Functions';
 function Table() {
-    const Tables = []
+    const Tables = GetTables()
+    console.log(Tables)
   return (
       <>
        <div className='w-full border-l-2   border-gray-100 min-h-svh'>
@@ -40,13 +42,13 @@ function Table() {
           <tbody>
               {Tables.map((list,key)=>(<tr  class="bg-white border-b ">
                   <th  scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                      {list.Table.id}
+                      {list.id}
                   </th>
                   <td class="px-6 py-4">
-                      {list.Table.Capacite}
+                      {list.capacite}
                   </td>
                   <td class="px-6 py-4">
-                  {list.Table.Disponibilite}
+                  {list.disponibilite?"True":"False"}
                   </td>
                   <td class="px-6 py-4 ">
                   <Link to=''>
