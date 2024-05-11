@@ -2,25 +2,25 @@ const express = require("express");
 const router = express.Router();
 const sql = require('mssql');
 
-class TableController {
+class CategoryController {
     constructor() {
         this.initializeRoutes();
     }
 
     initializeRoutes() {
         this.router = router;
-        router.get('/', this.getAllTables.bind(this));
-        router.post('/', this.createTable.bind(this));
-        router.get('/:tableId', this.getTableById.bind(this));
-        router.patch('/:tableId', this.updateTable.bind(this));
-        router.delete('/:tableId', this.deleteTable.bind(this));
-        router.delete('/', this.deleteAllTables.bind(this));
+        router.get('/', this.getAllCategories.bind(this));
+        router.post('/', this.createCategory.bind(this));
+        router.get('/:categoryId', this.getCategoryById.bind(this));
+        router.patch('/:categoryId', this.updateCategory.bind(this));
+        router.delete('/:categoryId', this.deleteCategory.bind(this));
+        router.delete('/', this.deleteAllCategories.bind(this));
     }
 
-    async getAllTables(req, res, next) {
+    async getAllCategories(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query("select * from tables", (err, records)=> {
+            request.query("select * from categories", (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -32,10 +32,10 @@ class TableController {
         }
     }
 
-    async createTable(req, res, next) {
+    async createCategory(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`INSERT INTO tables (capacite,image, disponibilite) VALUES ('${req.body.capacite}', '${req.body.image}', '${req.body.disponibilite}')`, (err, records)=> {
+            request.query(`INSERT INTO categories (titre,image) VALUES ('${req.body.titre}', '${req.body.image}')`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records });
@@ -47,12 +47,12 @@ class TableController {
         }
     }
 
-    async getTableById(req, res, next) {
+    async getCategoryById(req, res, next) {
         try {
-            const tableId = req.params.tableId;
+            const categoryId = req.params.categoryId;
 
             let request = new sql.Request();
-            request.query(`select * from tables where id=${tableId}`, (err, records)=> {
+            request.query(`select * from categories where id=${categoryId}`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -64,14 +64,15 @@ class TableController {
         }
     }
 
-    async updateTable(req, res, next) {
+    async updateCategory(req, res, next) {
         try {
-            const tableId = req.params.tableId;
+            const categoryId = req.params.categoryId;
 
             const updateOps = {};
             for (const ops of req.body) {
                 updateOps[ops.propName] = ops.value;
             }
+
             res.status(200).json({ status: "success", message: "User updated" });
         } catch (error) {
             console.log(error);
@@ -79,12 +80,12 @@ class TableController {
         }
     }
 
-    async deleteTable(req, res, next) {
+    async deleteCategory(req, res, next) {
         try {
-            const tableId = req.params.tableId;
+            const categoryId = req.params.categoryId;
 
             let request = new sql.Request();
-            request.query(`delete from tables where id='${tableId}'`, (err, records)=> {
+            request.query(`delete from categories where id='${categoryId}'`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -98,10 +99,10 @@ class TableController {
         }
     }
 
-    async deleteAllTables(req, res, next) {
+    async deleteAllCategories(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`delete from tables`, (err, records)=> {
+            request.query(`delete from categories`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -115,4 +116,5 @@ class TableController {
         }
     }
 }
-module.exports = new TableController().router;
+
+module.exports = new CategoryController().router;

@@ -2,25 +2,26 @@ const express = require("express");
 const router = express.Router();
 const sql = require('mssql');
 
-class TableController {
+class OrderController {
     constructor() {
         this.initializeRoutes();
     }
 
     initializeRoutes() {
         this.router = router;
-        router.get('/', this.getAllTables.bind(this));
-        router.post('/', this.createTable.bind(this));
-        router.get('/:tableId', this.getTableById.bind(this));
-        router.patch('/:tableId', this.updateTable.bind(this));
-        router.delete('/:tableId', this.deleteTable.bind(this));
-        router.delete('/', this.deleteAllTables.bind(this));
+        router.get('/', this.getAllOrders.bind(this));
+        router.post('/', this.createOrder.bind(this));
+        router.get('/:orderId', this.getOrderById.bind(this));
+        router.patch('/:orderId', this.updateOrder.bind(this));
+        router.delete('/:orderId', this.deleteOrder.bind(this));
+        router.delete('/', this.deleteAllOrders.bind(this));
+        router.get('/:userId', this.getOrderByClient.bind(this));
     }
 
-    async getAllTables(req, res, next) {
+    async getAllOrders(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query("select * from tables", (err, records)=> {
+            request.query("select * from orders", (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -32,10 +33,10 @@ class TableController {
         }
     }
 
-    async createTable(req, res, next) {
+    async createOrder(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`INSERT INTO tables (capacite,image, disponibilite) VALUES ('${req.body.capacite}', '${req.body.image}', '${req.body.disponibilite}')`, (err, records)=> {
+            request.query(`INSERT INTO orders (clientId,dishId) VALUES ('${req.body.clientId}', '${req.body.dishId}')`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records });
@@ -47,12 +48,12 @@ class TableController {
         }
     }
 
-    async getTableById(req, res, next) {
+    async getOrderById(req, res, next) {
         try {
-            const tableId = req.params.tableId;
+            const orderId = req.params.orderId;
 
             let request = new sql.Request();
-            request.query(`select * from tables where id=${tableId}`, (err, records)=> {
+            request.query(`select * from orders where id=${orderId}`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -64,27 +65,45 @@ class TableController {
         }
     }
 
-    async updateTable(req, res, next) {
+    async getOrderByClient(req, res, next) {
         try {
-            const tableId = req.params.tableId;
+            const userId = req.params.userId;
 
-            const updateOps = {};
-            for (const ops of req.body) {
-                updateOps[ops.propName] = ops.value;
-            }
-            res.status(200).json({ status: "success", message: "User updated" });
+            let request = new sql.Request();
+            request.query(`select * from orders where clientId=${userId}`, (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0] });
+                }
+            })
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: error });
         }
     }
 
-    async deleteTable(req, res, next) {
+    async updateOrder(req, res, next) {
         try {
-            const tableId = req.params.tableId;
+            const orderId = req.params.orderId;
+
+            const updateOps = {};
+            for (const ops of req.body) {
+                updateOps[ops.propName] = ops.value;
+            }
+
+            res.status(200).json({ status: "success", message: "Order updated" });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+
+    async deleteOrder(req, res, next) {
+        try {
+            const orderId = req.params.orderId;
 
             let request = new sql.Request();
-            request.query(`delete from tables where id='${tableId}'`, (err, records)=> {
+            request.query(`delete from orders where id='${orderId}'`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -98,10 +117,10 @@ class TableController {
         }
     }
 
-    async deleteAllTables(req, res, next) {
+    async deleteAllOrders(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`delete from tables`, (err, records)=> {
+            request.query(`delete from orders`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -115,4 +134,5 @@ class TableController {
         }
     }
 }
-module.exports = new TableController().router;
+
+module.exports = new OrderController().router;

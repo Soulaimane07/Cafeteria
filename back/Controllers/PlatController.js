@@ -2,11 +2,11 @@ const express = require("express")
 const router = express.Router()
 const mongoose = require('mongoose')
 
-const Commande = require('../Models/Commande')
-
+const Plat = require('../Models/Plat')
 
 router.get('/', (req, res, next) => {
-    Commande.find()
+    Plat.find()
+        .select(' _id titre description image prix categorie')
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -18,14 +18,19 @@ router.get('/', (req, res, next) => {
             })
         })
 })
+
 router.post('/', (req, res, next) => {
     console.log(req.body);
-    const commande = new Commande({
+    const plat = new Plat({
         _id: new mongoose.Types.ObjectId(),
-        user: req.body.user,
-        plat: req.body.plat,
+        titre: req.body.titre,
+        description: req.body.description,
+        image: req.body.imqge,
+        prix: req.body.prix,
+        categorie: req.body.categorie,
     })
-    commande.save()
+
+    plat.save()
         .then(docs => {
             res.status(201).json({status: "success", data: docs})
         })
@@ -35,10 +40,11 @@ router.post('/', (req, res, next) => {
         })
 })
 
-router.get('/:CommandeId', (req, res, next) => {
-    const CommandeId = req.params.CommandeId
+router.get('/:platId', (req, res, next) => {
+    const platId = req.params.platId
 
-    Commande.find({_id: CommandeId})
+    Plat.find({_id: platId})
+        .select("_id titre description image prix categorie ")
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -49,18 +55,18 @@ router.get('/:CommandeId', (req, res, next) => {
         })
 })
 
+router.patch('/:platId', (req, res, next) => {
+    const platId = req.params.platId
 
-
-router.patch('/:CommandeId', (req, res, next) => {
-    const CommandeId = req.params.CommandeId
-
-    const UpdateCommande = {
-        user: req.body.user,
-        plat: req.body.plat,
-      
+    const UpdatePlat = {
+        titre: req.body.titre,
+        description: req.body.description,
+        image: req.body.imqge,
+        prix: req.body.prix,
+        categorie: req.body.categorie,
     }
 
-    Commande.updateOne({_id: CommandeId}, {$set: UpdateCommande})
+    Plat.updateOne({_id: platId}, {$set: UpdatePlat})
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -73,10 +79,10 @@ router.patch('/:CommandeId', (req, res, next) => {
         })
 })
 
-router.delete('/:CommandeId', (req, res, next) => {
-    const CommandeId = req.params.CommandeId
+router.delete('/:platId', (req, res, next) => {
+    const platId = req.params.platId
    
-    Favorit.deleteOne({_id: CommandeId})
+    Plat.deleteOne({_id: platId})
         .exec()
         .then(result => {
             res.status(200).json(result)
@@ -88,19 +94,3 @@ router.delete('/:CommandeId', (req, res, next) => {
             })
         })
 })
-
-router.delete('/', (req, res, next) => {
-    Commande.deleteMany()
-        .exec()
-        .then(result => {
-            res.status(200).json(result)
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
-})
-
-module.exports = router

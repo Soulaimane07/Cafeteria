@@ -11,10 +11,6 @@ function Reservations() {
        <div className='w-full border-l-2   border-gray-100 min-h-svh'>
        <header className='w-5/6 mb-8 mx-20 justify-between flex text-center'>
                   <h1 className='text-2xl font-medium'> Reservation ({Reservations?.length}) </h1>
-                  <Link to={"/admin/addreservation"} className='flex items-center px-6 border-2 bg-hoverPrimaryColor  border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all  rounded-sm py-2 space-x-1'> 
-                      <IoAdd size={20} />
-                      <p> Reservation</p>
-                  </Link>
               </header>
               
               <div className=' px-20 text-center'>

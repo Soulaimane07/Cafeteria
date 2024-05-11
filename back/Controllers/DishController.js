@@ -2,25 +2,25 @@ const express = require("express");
 const router = express.Router();
 const sql = require('mssql');
 
-class TableController {
+class DishController {
     constructor() {
         this.initializeRoutes();
     }
 
     initializeRoutes() {
         this.router = router;
-        router.get('/', this.getAllTables.bind(this));
-        router.post('/', this.createTable.bind(this));
-        router.get('/:tableId', this.getTableById.bind(this));
-        router.patch('/:tableId', this.updateTable.bind(this));
-        router.delete('/:tableId', this.deleteTable.bind(this));
-        router.delete('/', this.deleteAllTables.bind(this));
+        router.get('/', this.getAllDishes.bind(this));
+        router.post('/', this.createDish.bind(this));
+        router.get('/:dishId', this.getDishById.bind(this));
+        router.patch('/:dishId', this.updateDish.bind(this));
+        router.delete('/:dishId', this.deleteDish.bind(this));
+        router.delete('/', this.deleteAllDishes.bind(this));
     }
 
-    async getAllTables(req, res, next) {
+    async getAllDishes(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query("select * from tables", (err, records)=> {
+            request.query("select * from dishes", (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -32,10 +32,10 @@ class TableController {
         }
     }
 
-    async createTable(req, res, next) {
+    async createDish(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`INSERT INTO tables (capacite,image, disponibilite) VALUES ('${req.body.capacite}', '${req.body.image}', '${req.body.disponibilite}')`, (err, records)=> {
+            request.query(`INSERT INTO dishes (titre,description,image, prix, categorieId,day) VALUES ('${req.body.titre}', '${req.body.description}', '${req.body.image}', '${req.body.prix}',, '${req.body.categorieId}', '${req.body.day}')`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records });
@@ -47,12 +47,12 @@ class TableController {
         }
     }
 
-    async getTableById(req, res, next) {
+    async getDishById(req, res, next) {
         try {
-            const tableId = req.params.tableId;
+            const dishId = req.params.dishId;
 
             let request = new sql.Request();
-            request.query(`select * from tables where id=${tableId}`, (err, records)=> {
+            request.query(`select * from dishes where id=${dishId}`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records.recordsets[0] });
@@ -64,14 +64,15 @@ class TableController {
         }
     }
 
-    async updateTable(req, res, next) {
+    async updateDish(req, res, next) {
         try {
-            const tableId = req.params.tableId;
+            const dishId = req.params.dishId;
 
             const updateOps = {};
             for (const ops of req.body) {
                 updateOps[ops.propName] = ops.value;
             }
+
             res.status(200).json({ status: "success", message: "User updated" });
         } catch (error) {
             console.log(error);
@@ -79,12 +80,12 @@ class TableController {
         }
     }
 
-    async deleteTable(req, res, next) {
+    async deleteDish(req, res, next) {
         try {
-            const tableId = req.params.tableId;
+            const dishId = req.params.dishId;
 
             let request = new sql.Request();
-            request.query(`delete from tables where id='${tableId}'`, (err, records)=> {
+            request.query(`delete from dishes where id='${dishId}'`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -98,10 +99,10 @@ class TableController {
         }
     }
 
-    async deleteAllTables(req, res, next) {
+    async deleteAllDishes(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`delete from tables`, (err, records)=> {
+            request.query(`delete from dishes`, (err, records)=> {
                 if(err){
                     res.status(400).json();
                     console.log(err);
@@ -115,4 +116,5 @@ class TableController {
         }
     }
 }
-module.exports = new TableController().router;
+
+module.exports = new DishController().router;

@@ -7,14 +7,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UserActions } from './Redux/Slices/UserSlice';
 import { useEffect } from 'react';
 
-// import ReadUsers from './Pages/Admin/Users/ReadUsers';
+import Dashboard from './Pages/Admin/Dashboard/Dashboard';
+import ReadUsers from './Pages/Admin/Users/ReadUsers';
+import AddUsers from './Pages/Admin/Users/AddUsers';
+import ReadDish from './Pages/Admin/Dishes/ReadDish';
+import ReadCategories from './Pages/Admin/Categories/ReadCategories';
 import ReadTables from './Pages/Admin/Tables/ReadTables';
-import ReadReservations from './Pages/Admin/Rerservations/ReadReservations';
+import ReadReservations from './Pages/Admin/Reservations/ReadReservations';
 import ReadOrders from './Pages/Admin/Orders/ReadOrders';
 import ReadPaiment from './Pages/Admin/Paiment/ReadPaiment';
 import Home from './Pages/Client/Home/Home';
 import Categories from './Pages/Client/Categories/Categories';
 import CategorieDetails from './Pages/Client/Categories/CategorieDetails';
+import AddTables from './Pages/Admin/Tables/AddTables';
+import AddDish from './Pages/Admin/Dishes/AddDish';
+import EditUsers from './Pages/Admin/Users/EditUsers';
 
 function App() {
   const user = useSelector(state => state.User)
@@ -42,16 +49,20 @@ function App() {
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Signup />} />
-
-          <Route element={<AdminRoutes />}>
-            {/* <Route path='/admin/dashboard' element={<Dashboard />} /> */}
-            {/* <Route path='/admin/users' element={<ReadUsers />} /> */}
-            {/* <Route path='/admin/products' element={<ReadProduct />} /> */}
-            {/* <Route path='/admin/categories' element={<ReadCategories />} /> */}
+          <Route path='/admin/dashboard' element={<Dashboard />} />
+            <Route path='/admin/users' element={<ReadUsers />} />
+            <Route path='/admin/adduser' element={<AddUsers />} />
+            <Route path='/admin/edituser' element={<EditUsers />} />
+            <Route path='/admin/dishes' element={<ReadDish />} />
+            <Route path='/admin/adddish' element={<AddDish />} />
+            <Route path='/admin/categories' element={<ReadCategories />} />
             <Route path='/admin/tables' element={<ReadTables />} />
             <Route path='/admin/reservations' element={<ReadReservations/>} />
             <Route path='/admin/orders' element={<ReadOrders />} />
             <Route path='/admin/paiments' element={<ReadPaiment />} />
+            <Route path='/admin/addtable' element={<AddTables />} />
+          <Route element={<AdminRoutes />}>
+            
           </Route>
           
           <Route element={<ClientRoutes />}>

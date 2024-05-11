@@ -24,8 +24,8 @@ function Sidebar() {
             "icon": <FaRegUser />
         },
         {
-            "title": "Products",
-            "link": "../../admin/products",
+            "title": "Dishes",
+            "link": "../../admin/dishes",
             "icon": <IoRestaurantOutline />
         },
         {

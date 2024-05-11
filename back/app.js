@@ -35,8 +35,20 @@ app.use('/paiments', paimentsController)
 const favoritsRoutes = require('./Controllers/FavoritController')
 app.use('/favorits', favoritsRoutes)
 
-const commandesRoutes = require('./Controllers/CommandeController')
-app.use('/commandes', commandesRoutes)
+const ordersRoutes = require('./Controllers/OrderController')
+app.use('/orders', ordersRoutes)
+
+const dishesRoutes = require('./Controllers/DishController')
+app.use('/dishes', dishesRoutes)
+
+const categoriesRoutes = require('./Controllers/CategoryController')
+app.use('/categories', categoriesRoutes)
+
+const tablesRoutes = require('./Controllers/TableController')
+app.use('/tables', tablesRoutes)
+
+const reservationsRoutes = require('./Controllers/ReservationController')
+app.use('/reservations', reservationsRoutes)
 
 
 

@@ -1,106 +1,103 @@
-const express = require("express")
-const router = express.Router()
-const mongoose = require('mongoose')
+const express = require("express");
+const router = express.Router();
+const sql = require('mssql');
 
-const Favorit = require('../Models/Favorit')
-
-
-router.get('/', (req, res, next) => {
-    Favorit.find()
-        .exec()
-        .then(docs => {
-            res.status(200).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
-})
-router.post('/', (req, res, next) => {
-    console.log(req.body);
-    const Favorit = new Favorit({
-        _id: new mongoose.Types.ObjectId(),
-        user: req.body.user,
-        plat: req.body.plat,
-    })
-    Favorit.save()
-        .then(docs => {
-            res.status(201).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({error: err})
-        })
-})
-
-router.get('/:FavoritId', (req, res, next) => {
-    const FavoritId = req.params.FavoritId
-
-    Favorit.find({_id: FavoritId})
-        .exec()
-        .then(docs => {
-            res.status(200).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err),
-            res.status(500).json({error: err})
-        })
-})
-
-
-
-router.patch('/:FavoritId', (req, res, next) => {
-    const FavoritId = req.params.FavoritId
-
-    const UpdateFavorit = {
-        user: req.body.user,
-        plat: req.body.plat,
-      
+class FavoritController {
+    constructor() {
+        this.initializeRoutes();
     }
 
-    Favorit.updateOne({_id: FavoritId}, {$set: UpdateFavorit})
-        .exec()
-        .then(docs => {
-            res.status(200).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
-})
+    initializeRoutes() {
+        this.router = router;
+        router.get('/', this.getAllFavorits.bind(this));
+        router.post('/', this.createFavorit.bind(this));
+        router.get('/:userId', this.getFavoritByClient.bind(this));
+        router.delete('/:favoritId', this.deleteFavorit.bind(this));
+        router.delete('/', this.deleteAllFavorits.bind(this));
+    }
 
-router.delete('/:FavoritId', (req, res, next) => {
-    const FavoritId = req.params.FavoritId
-   
-    Favorit.deleteOne({_id: FavoritId})
-        .exec()
-        .then(result => {
-            res.status(200).json(result)
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
+    async getAllFavorits(req, res, next) {
+        try {
+            let request = new sql.Request();
+            request.query("select * from favorits", (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0] });
+                }
             })
-        })
-})
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
 
-router.delete('/', (req, res, next) => {
-    Favorit.deleteMany()
-        .exec()
-        .then(result => {
-            res.status(200).json(result)
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
+    async createFavorit(req, res, next) {
+        try {
+            let request = new sql.Request();
+            request.query(`INSERT INTO favorits (clientId,dishId) VALUES ('${req.body.clientId}', '${req.body.dishId}')`, (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records });
+                }
             })
-        })
-})
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
 
-module.exports = router
+    async getFavoritByClient(req, res, next) {
+        try {
+            const userId = req.params.userId;
+
+            let request = new sql.Request();
+            request.query(`select * from favorits where userid=${userId}`, (err, records)=> {
+                if(err) console.log(err);
+                else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0] });
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+
+    async deleteFavorit(req, res, next) {
+        try {
+            const favoritId = req.params.favoritId;
+
+            let request = new sql.Request();
+            request.query(`delete from favorits where id='${favoritId}'`, (err, records)=> {
+                if(err){
+                    res.status(400).json();
+                    console.log(err);
+                } else {
+                    res.status(200).json({ status: "success", data: records.recordsets[0]});
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+
+    async deleteAllFavorits(req, res, next) {
+        try {
+            let request = new sql.Request();
+            request.query(`delete from favorits`, (err, records)=> {
+                if(err){
+                    res.status(400).json();
+                    console.log(err);
+                } else {
+                    res.status(200).json({ status: "success"});
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error });
+        }
+    }
+}
+
+module.exports = new FavoritController().router;
