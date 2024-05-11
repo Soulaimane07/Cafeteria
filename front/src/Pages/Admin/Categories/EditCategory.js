@@ -13,7 +13,7 @@ import { IoIosClose } from 'react-icons/io';
 const Buttons = ({createFun, condittion}) => {
     return(
         <div className='flex space-x-2 items-stretch'>
-            <Link to={'/admin/Dishes'} className='px-8 py-2 text-gray-800 opacity-80 hover:border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all border-2 border-transparent'>Cancel</Link>
+            <Link to={'/admin/Categories'} className='px-8 py-2 text-gray-800 opacity-80 hover:border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all border-2 border-transparent'>Cancel</Link>
             <button 
                 onClick={createFun} 
                 disabled={condittion}
@@ -22,38 +22,29 @@ const Buttons = ({createFun, condittion}) => {
         </div>
     )
   }
-
-function EditDish() {
-    const categories = []
+function EditCategory() {
     let { id } = useParams();
     const navigate = useNavigate();
-    const Dish = GetDish(id)
-    console.log(Dish)
+    const Categorie = {}
+    console.log(Categorie)
     const [titre, setTitre] = useState('')
-    const [description, setDescription] = useState('')
     const [image, setImage] = useState(null)
-    const [prix, setPrix] = useState('')
-    const [categorie, setCategorie] = useState(0)
-    const [Day, setDay] = useState('')
     
    
      useEffect(()=>{
-       if (Dish){
-       setTitre(Dish.titre)
-       setDescription(Dish.description)
-       setImage(Dish.image)
-       setPrix(Dish.Prix)
-       setDay(Dish.Day)
-   }},[Dish])
+       if (Categorie){
+       setTitre(Categorie.titre)
+       setImage(Categorie.image)
+   }},[Categorie])
    
-   let newDish = {
+   let newCategory = {
      titre: titre,
    }
-   if(typeof(image) === "object"){ newDish = {...newDish, image}}
+   if(typeof(image) === "object"){ newCategory = {...newCategory, image}}
    let condittion = !titre || !image ;
    
-   console.log(newDish);
-
+   console.log(newCategory);
+   
    const [clearImage, setClearImage] = useState(false)
   return (
     <>
@@ -66,10 +57,10 @@ function EditDish() {
   <article className='flex-1'>
       <header className='w-full mb-6 px-8 justify-between flex text-center items-center'>
           <div className='flex space-x-3 text-gray-800 '>
-          <Link to={"/admin/Dishes"} className='flex px-4 border-2 text-gray-600 border-gray-200 rounded-sm items-center bg-white hover:border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all py-2 space-x-1'> 
+          <Link to={"/admin/Categories"} className='flex px-4 border-2 text-gray-600 border-gray-200 rounded-sm items-center bg-white hover:border-hoverPrimaryColor hover:text-hoverPrimaryColor hover:bg-white transition-all py-2 space-x-1'> 
                       <FaArrowLeft size={20} />
                   </Link>
-              <h1 className='text-2xl font-medium text-gray-800'> Update Dish </h1>
+              <h1 className='text-2xl font-medium text-gray-800'> Update Category </h1>
           </div>
 
          
@@ -77,9 +68,8 @@ function EditDish() {
       <main className='bg-gray-100 px-8 py-6 rounded-sm'>
               <form   className='bg-white px-6 py-6 rounded-sm '>
                   <div className='w-full flex items-stretch space-x-8'>
-                      <div className="w-2/5 flex items-center justify-center relative">
-                          
-                          {image && <div onMouseEnter={()=> setClearImage(true)} onMouseLeave={()=> setClearImage(false)} className='Image absolute top-0 left-0 flex w-full h-full justify-center items-center  '>
+                  <div className="w-2/5 flex items-center justify-center relative">
+                  {image && <div onMouseEnter={()=> setClearImage(true)} onMouseLeave={()=> setClearImage(false)} className='Image absolute top-0 left-0 flex w-full h-full justify-center items-center  '>
                               {clearImage && 
                                   <div onClick={()=> setImage(null)} className=' cursor-pointer  flex w-full h-full justify-center items-center'>
                                       <IoIosClose  size={60} />
@@ -102,45 +92,14 @@ function EditDish() {
                           }
                       </div> 
 
-                      <div className='flex-1'>
-                          <div className='py-2'>
-                              <div className='flex flex-col'>
-                                  <label className=' font-medium text-gray-600'> Dish Name </label>
-                                  <input value={titre} onChange={(e)=> setTitre(e.target.value)} type='text' className='border-2 px-4 py-2 rounded-sm mt-2' placeholder='Dish Name' />
-                              </div>
+                  <div className='flex-1'>
+                      <div className='py-2'>
+                          <div className='flex flex-col'>
+                              <label className=' font-medium text-gray-600'> Category Name </label>
+                              <input value={titre} onChange={(e)=> setTitre(e.target.value)} type='text' className='border-2 px-4 py-2 rounded-sm mt-2' placeholder='Category Name' />
                           </div>
-                          <div className='py-2'>
-                              <div className='flex flex-col'>
-                                  <label className=' font-medium text-gray-600'> Discription </label>
-                                  <input value={description} onChange={(e)=> setDescription(e.target.value)} type='text' className='border-2 px-4 py-2 rounded-sm mt-2' placeholder='Description' />
-                              </div>
-                          </div>
-                          
-                          <div className='flex-1 py-2'>
-                              <div className='flex flex-col'>
-                                  <label className=' font-medium text-gray-600'> Category </label>
-                                  <select value={categorie} onChange={(e)=> setCategorie(e.target.value)} className='border-2 px-4 py-2 rounded-sm mt-2 '>
-                                      <option className=''> Select Category </option>
-                                      {categories?.map((item,key)=>(
-                                          <option value={item.id} key={key} className='border-2 px-4 py-2 rounded-sm mt-2'> {item.titre} </option>
-                                      ))}
-                                  </select>
-                              </div>
-                          </div>
-                          <div className='py-2'>
-                              <div className='flex flex-col'>
-                                  <label className=' font-medium text-gray-600'> Price </label>
-                                  <input value={prix} onChange={(e)=> setPrix(e.target.value)} type='number' className='border-2 px-4 py-2 rounded-sm mt-2' placeholder='Price' />
-                              </div>
-                          </div>
-                          <div className='py-2'>
-                              <div className='flex flex-col'>
-                                  <label className=' font-medium text-gray-600'> Day </label>
-                                  <input value={Day} onChange={(e)=> setDay(e.target.value)} type='text' className='border-2 px-4 py-2 rounded-sm mt-2' placeholder='Day' />
-                              </div>
-                          </div>
-
                       </div>
+                  </div>
                   </div>
 
                   <div className='flex justify-end mt-10'>
@@ -159,4 +118,4 @@ function EditDish() {
   )
 }
 
-export default EditDish
+export default EditCategory

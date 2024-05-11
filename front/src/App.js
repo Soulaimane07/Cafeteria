@@ -25,6 +25,7 @@ import EditUsers from './Pages/Admin/Users/EditUsers';
 import AddCategory from './Pages/Admin/Categories/AddCategory';
 import EditTable from './Pages/Admin/Tables/EditTable';
 import EditDish from './Pages/Admin/Dishes/EditDish';
+import EditCategory from './Pages/Admin/Categories/EditCategory';
 
 
 
@@ -62,6 +63,7 @@ function App() {
             <Route path='/admin/adddish' element={<AddDish />} />
             <Route path='/admin/categories' element={<ReadCategories />} />
             <Route path='/admin/addcategory' element={<AddCategory />} />
+            <Route path='/admin/editcategory' element={<EditCategory />} />
             <Route path='/admin/tables' element={<ReadTables />} />
             <Route path='/admin/addtable' element={<AddTables />} />
             <Route path='/admin/edittable' element={<EditTable />} />

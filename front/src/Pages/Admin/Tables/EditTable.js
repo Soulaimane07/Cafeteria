@@ -73,7 +73,10 @@ function EditTable() {
                         <div className='py-2'>
                             <div className='flex flex-col'>
                                 <label className=' font-medium text-gray-600'> Disponibilite </label>
-                                <input value={Disponibilite} onChange={(e)=> setDisponibilite(e.target.value)} type='text' className='border-2 px-4 py-2 rounded-sm mt-2' placeholder='Disponibilite' />
+                                <select onChange={(e)=> setDisponibilite(e.target.value)} className='border-2 px-4 py-2 rounded-sm mt-2'>
+                                        <option value="True">True</option>
+                                        <option value="False">False</option>
+                                    </select>
                             </div>
                         </div>
                     </div>
