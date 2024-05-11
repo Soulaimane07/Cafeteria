@@ -23,7 +23,6 @@ app.use((req, res, next) => {
 
 
 
-
 // Routes
 
 const userController = require('./Controllers/UserContoller');
