@@ -6,7 +6,7 @@ import AdminNavbar from '../../../Components/Navbar/AdminNavbar'
 import Footer from '../../../Components/Footer/Footer'
 import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
 import { GetUser } from '../../../Components/Functions';
-
+import axios from 'axios';
 const Buttons = ({createFun, condittion}) => {
     return(
         <div className='flex space-x-2 items-stretch'>
@@ -49,11 +49,21 @@ function EditUsers() {
   
     let condittion = !lastname || !firstname || !email || !password; 
   
-    const Update = () => {
+    const  Update = () => {
         // e.preventDefault();
         console.log("Updated !");
-        
-        
+        axios.patch(`http://localhost:3005/users/${id}`, newUserData, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then(res => {
+                console.log(res);
+                navigate("/admin/Users")
+            })
+            .catch(err => {
+                console.log(err);
+            })
 
     }
   
@@ -112,7 +122,7 @@ function EditUsers() {
                 </div>
 
                 <div className='flex justify-end mt-10'>
-                    <Buttons condittion={condittion} createFun={Update()}  />
+                    <Buttons condittion={condittion} createFun={Update}  />
                 </div>
             </div>
         </main>

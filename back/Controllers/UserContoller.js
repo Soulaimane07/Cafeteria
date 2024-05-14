@@ -89,18 +89,23 @@ class UserController {
     async updateUser(req, res, next) {
         try {
             const userId = req.params.userId;
-
-            const updateOps = {};
-            for (const ops of req.body) {
-                updateOps[ops.propName] = ops.value;
-            }
-
-            res.status(200).json({ status: "success", message: "User updated" });
+            const { email, fname, lname, pass } = req.body;
+    
+            let request = new sql.Request();
+            request.query(`UPDATE users SET email='${email}', fname='${fname}', lname='${lname}', pass='${pass}' WHERE id='${userId}'`, (err, records) => {
+                if (err) {
+                    res.status(400).json({ error: "Failed to update user." });
+                    console.log(err);
+                } else {
+                    res.status(200).json({ status: "success", data: records });
+                }
+            });
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: error });
         }
     }
+    
 
     async deleteUser(req, res, next) {
         try {
