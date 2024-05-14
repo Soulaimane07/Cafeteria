@@ -5,7 +5,7 @@ import { useParams,useNavigate } from 'react-router-dom';
 import AdminNavbar from '../../../Components/Navbar/AdminNavbar'
 import Footer from '../../../Components/Footer/Footer'
 import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
-import { GetUser, UpdateUser } from '../../../Components/Functions';
+import { GetUser } from '../../../Components/Functions';
 
 const Buttons = ({createFun, condittion}) => {
     return(
@@ -52,7 +52,7 @@ function EditUsers() {
     const Update = () => {
         // e.preventDefault();
         console.log("Updated !");
-        UpdateUser(id,newUserData);
+        
         
 
     }

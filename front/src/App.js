@@ -63,9 +63,9 @@ function App() {
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Signup />} />
-          
+          <Route path='/admin/dashboard' element={<Dashboard />} />
           <Route element={<AdminRoutes />}>
-            <Route path='/admin/dashboard' element={<Dashboard />} />
+          
             <Route path='/admin/users' element={<ReadUsers />} />
             <Route path='/admin/adduser' element={<AddUsers />} />
             <Route path='/admin/edituser/:id' element={<EditUsers />} />
