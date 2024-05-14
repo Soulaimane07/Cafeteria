@@ -2,11 +2,13 @@ const express = require("express")
 const router = express.Router()
 const mongoose = require('mongoose')
 
-const Categorie = require('../Models/Categorie')
+const Order = require('../Models/Order')
 
 router.get('/', (req, res, next) => {
-    Categorie.find()
-        .select('_id titre image ')
+    Order.find()
+        .select('_id user plat')
+        .populate('user')
+        .populate('plat')
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -20,14 +22,13 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-    console.log(req.body);
-    const categorie = new Categorie({
+    const order = new Order({
         _id: new mongoose.Types.ObjectId(),
-        titre: req.body.titre,
-        image: req.body.image,
+        user: req.body.user,
+        plat: req.body.plat,
     })
 
-    categorie.save()
+    order.save()
         .then(docs => {
             res.status(201).json({status: "success", data: docs})
         })
@@ -37,11 +38,13 @@ router.post('/', (req, res, next) => {
         })
 })
 
-router.get('/:categorieId', (req, res, next) => {
-    const categorieId = req.params.categorieId
+router.get('/:userId', (req, res, next) => {
+    const userId = req.params.userId
 
-    Categorie.find({_id: categorieId})
-        .select("_id titre image")
+    Order.find({user: userId})
+        .select("_id user plat")
+        .populate('user')
+        .populate('plat')
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -52,31 +55,10 @@ router.get('/:categorieId', (req, res, next) => {
         })
 })
 
-router.patch('/:categorieId', (req, res, next) => {
-    const categorieId = req.params.categorieId
+router.delete('/:orderId', (req, res, next) => {
+    const orderId = req.params.orderId
 
-    const UpdateCategorie = {
-        titre: req.body.titre,
-        image: req.body.image,
-    }
-
-    Categorie.updateOne({_id: categorieId}, {$set: UpdateCategorie})
-        .exec()
-        .then(docs => {
-            res.status(200).json({status: "success", data: docs})
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
-})
-
-router.delete('/:categorieId', (req, res, next) => {
-    const categorieId = req.params.categorieId
-   
-    Categorie.deleteOne({_id: categorieId})
+    Order.deleteOne({_id: orderId})
         .exec()
         .then(result => {
             res.status(200).json(result)
@@ -88,3 +70,19 @@ router.delete('/:categorieId', (req, res, next) => {
             })
         })
 })
+
+router.delete('/', (req, res, next) => {
+    Order.deleteMany()
+        .exec()
+        .then(result => {
+            res.status(200).json(result)
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            })
+        })
+})
+
+module.exports = router

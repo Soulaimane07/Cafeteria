@@ -6,6 +6,7 @@ import { GrFavorite } from "react-icons/gr";
 import { RiBillLine } from "react-icons/ri";
 import { IoRestaurantOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
+import { BiCategory } from 'react-icons/bi';
 
 
 function Sidebar() {
@@ -14,6 +15,16 @@ function Sidebar() {
             "title": "Home",
             "link": "/",
             "icon": <GoHome size={20} />
+        },
+        {
+            "title": "Plats",
+            "link": "/plats",
+            "icon": <IoRestaurantOutline size={20} />
+        },
+        {
+            "title": "Categories",
+            "link": "/categories",
+            "icon": <BiCategory size={20} />
         },
         {
             "title": "Food Order",

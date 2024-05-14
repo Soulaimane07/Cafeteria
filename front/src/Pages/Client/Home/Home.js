@@ -5,7 +5,7 @@ import Header from './Header'
 import Categorie from './Categorie'
 import { PageTitle } from '../../../Components/Functions'
 import { serverUrl } from "../../../Components/Variables";
-
+import Plats from './Plats'
 
 function Home() {
   PageTitle('Cafeteria | Home')
@@ -20,6 +20,7 @@ function Home() {
                 <section className='flex-1 rounded-md px-10 mt-4'>
                     <Header />
                     <Categorie />
+                    <Plats />
                 </section>
                 <section>
                   <form action={`${serverUrl}/paiments/checkout`} method="POST">
