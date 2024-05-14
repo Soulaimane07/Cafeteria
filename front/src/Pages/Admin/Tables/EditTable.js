@@ -7,7 +7,7 @@ import Footer from '../../../Components/Footer/Footer'
 import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
 import Table from './Table';
 import { GetTable } from '../../../Components/Functions';
-
+import axios from 'axios';
 const Buttons = ({createFun, condittion}) => {
     return(
         <div className='flex space-x-2 items-stretch'>
@@ -36,11 +36,29 @@ function EditTable() {
     }},[Table])
       
       const newTableData = {
-          Capacity: Capacity,
-          Disponibilite: Disponibilite,
+        capacite: Capacity,
+        disponibilite: Disponibilite,
       }
     
       let condittion = !Capacity ; 
+
+      const  Update = () => {
+        // e.preventDefault();
+        console.log("Updated !");
+        axios.patch(`http://localhost:3005/tables/${id}`, newTableData, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then(res => {
+                console.log(res);
+                navigate("/admin/Tables")
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+    }
   return (
     <>
     <main className='flex'>
@@ -84,7 +102,7 @@ function EditTable() {
                 </div>
 
                 <div className='flex justify-end mt-10'>
-                    <Buttons condittion={condittion}  />
+                    <Buttons condittion={condittion} createFun={Update}  />
                 </div>
             </div>
         </main>
