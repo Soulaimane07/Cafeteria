@@ -4,7 +4,7 @@ import { CiTrash } from 'react-icons/ci';
 import { BiEditAlt } from "react-icons/bi";
 import { IoAdd } from "react-icons/io5";
 import { Link } from 'react-router-dom';
-import { GetUsers } from '../../../Components/Functions';
+import { GetUsers, Removeuser } from '../../../Components/Functions';
 
 
 function User() {
@@ -76,7 +76,7 @@ function User() {
                     <BiEditAlt size={25} />
                 </button>
                 </Link>
-                <button  className=' opacity-40 hover:opacity-100 hover:text-red-600 transition-all '>
+                <button onClick={()=>Removeuser(user.id)}  className=' opacity-40 hover:opacity-100 hover:text-red-600 transition-all '>
                     <CiTrash size={25} />
                 </button>
                 </td>

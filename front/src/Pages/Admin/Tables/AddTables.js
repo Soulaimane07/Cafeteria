@@ -23,7 +23,7 @@ const Buttons = ({createFun, condittion}) => {
 function AddTables() {
     const navigate = useNavigate();
     const [capacite, setcapacite] = useState('')
-    const [disponibilite, setDisponibilite] = useState('')
+    const [disponibilite, setDisponibilite] = useState('True')
     const newTables = {
         capacite: capacite,
         disponibilite: disponibilite,
