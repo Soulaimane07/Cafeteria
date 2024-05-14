@@ -4,11 +4,12 @@ import Footer from '../../../Components/Footer/Footer'
 import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
 import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaUpDown } from "react-icons/fa6";
-import GetDish from '../Dishes/Dish'
+
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { IoIosClose } from 'react-icons/io';
+import { GetCategories, GetDish } from '../../../Components/Functions';
 
 const Buttons = ({createFun, condittion}) => {
     return(
@@ -24,7 +25,7 @@ const Buttons = ({createFun, condittion}) => {
   }
 
 function EditDish() {
-    const categories = []
+    const categories = GetCategories()
     let { id } = useParams();
     const navigate = useNavigate();
     const Dish = GetDish(id)
@@ -42,8 +43,9 @@ function EditDish() {
        setTitre(Dish.titre)
        setDescription(Dish.description)
        setImage(Dish.image)
-       setPrix(Dish.Prix)
-       setDay(Dish.Day)
+       setPrix(Dish.prix)
+       setCategorie(Dish.categorieId)
+       setDay(Dish.day)
    }},[Dish])
    
    let newDish = {
@@ -52,7 +54,7 @@ function EditDish() {
    if(typeof(image) === "object"){ newDish = {...newDish, image}}
    let condittion = !titre || !image ;
    
-   console.log(newDish);
+   
 
    const [clearImage, setClearImage] = useState(false)
   return (

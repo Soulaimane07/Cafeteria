@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import AdminNavbar from '../../../Components/Navbar/AdminNavbar'
 import Footer from '../../../Components/Footer/Footer'
 import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
-import User from '../Users/User'
+import axios from 'axios'
+import { serverUrl } from '../../../Components/Variables'; 
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa6";
 const Buttons = ({createFun, condittion}) => {
@@ -26,17 +27,39 @@ function AddUsers() {
     const [password, setPassword] = useState('')
     const [role, setRole] = useState('client')
     const newUser = {
-        lname: lastname,
-        fname: firstname,
-        email: email,
-        password: password,
-        role: role
+        
     }
-
+    let lname=lastname
+    let fname= firstname
+   
+    let pass= password
     let condittion = lastname.length === 0 || firstname.length === 0 || email.length === 0 || password.length === 0 
 
 
     console.log(newUser);
+    const Create = (e) => {
+        // e.preventDefault();
+        console.log("Created !");
+        fetch(`${serverUrl}/users/`, 
+        {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({email, fname, lname, pass})
+      }
+    )
+        .then(response => response.json())
+        .then(data => {
+            
+           console.log(data)
+            
+        })
+        .catch(error => {
+            console.error(error)
+           
+        });
+}
 
   return (
     <>
@@ -93,7 +116,7 @@ function AddUsers() {
                   </div>
 
                   <div className='flex justify-end mt-10'>
-                      <Buttons condittion={condittion} />
+                      <Buttons condittion={condittion} createFun={Create} />
                   </div>
               </div>
           </main>
