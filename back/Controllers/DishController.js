@@ -35,7 +35,7 @@ class DishController {
     async createDish(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`INSERT INTO dishes (titre,description,image, prix, categorieId,day) VALUES ('${req.body.titre}', '${req.body.description}', '${req.body.image}', '${req.body.prix}',, '${req.body.categorieId}', '${req.body.day}')`, (err, records)=> {
+            request.query(`INSERT INTO dishes (titre,description,image, prix, categorieId,day) VALUES ('${req.body.titre}', '${req.body.description}', '${req.body.image}', '${req.body.prix}', '${req.body.categorieId}', '${req.body.day}')`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records });

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { IoIosClose } from 'react-icons/io';
-
+import axios from 'axios';
 import { GetCategorie } from '../../../Components/Functions'
 const Buttons = ({createFun, condittion}) => {
     return(
@@ -23,7 +23,7 @@ const Buttons = ({createFun, condittion}) => {
     )
   }
 function EditCategory() {
-    let { id } = useParams();
+    let {id} = useParams();
     const navigate = useNavigate();
     const Categorie = GetCategorie(id)
     
@@ -41,11 +41,30 @@ function EditCategory() {
      titre: titre,
    }
    if(typeof(image) === "object"){ newCategory = {...newCategory, image}}
+
+
    let condittion = !titre || !image ;
    
    console.log(newCategory);
    
    const [clearImage, setClearImage] = useState(false)
+   const  Update = () => {
+    // e.preventDefault();
+    console.log("Updated !");
+    axios.patch(`http://localhost:3005/categories/${id}`, newCategory, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then(res => {
+            console.log(res);
+            navigate("/admin/Categories")
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
+}
   return (
     <>
     <main className='flex'>
@@ -66,7 +85,7 @@ function EditCategory() {
          
       </header>
       <main className='bg-gray-100 px-8 py-6 rounded-sm'>
-              <form   className='bg-white px-6 py-6 rounded-sm '>
+              <div   className='bg-white px-6 py-6 rounded-sm '>
                   <div className='w-full flex items-stretch space-x-8'>
                   <div className="w-2/5 flex items-center justify-center relative">
                   {image && <div onMouseEnter={()=> setClearImage(true)} onMouseLeave={()=> setClearImage(false)} className='Image absolute top-0 left-0 flex w-full h-full justify-center items-center  '>
@@ -103,9 +122,9 @@ function EditCategory() {
                   </div>
 
                   <div className='flex justify-end mt-10'>
-                      <Buttons condittion={condittion} />
+                      <Buttons condittion={condittion} createFun={Update} />
                   </div>
-              </form>
+              </div>
           </main>
      
     </article>

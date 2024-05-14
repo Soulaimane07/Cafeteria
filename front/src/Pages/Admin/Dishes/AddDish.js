@@ -6,7 +6,8 @@ import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
 
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa6";
-
+import { GetCategories } from '../../../Components/Functions';
+import axios from 'axios';
 const Buttons = ({createFun, condittion}) => {
   return(
       <div className='flex space-x-2 items-stretch'>
@@ -20,25 +21,44 @@ const Buttons = ({createFun, condittion}) => {
   )  }
 
 function AddDish() {
-  const categories = []
+  const categories = GetCategories()
   const navigate = useNavigate();
   const [titre, setTitre] = useState('')
-  const [prix, setPrix] = useState(0)
-  const [categorie, setCategorie] = useState(0)
+  const [description, setDescription] = useState('')
   const [image, setImage] = useState(null)
-  let userid = 1
-  const newProduct = {
-      titre: titre,
-      prix: Number(prix),
-      categorie: Number(categorie),
-      image: image,
-      seller: userid,
+  const [prix, setPrix] = useState('')
+  const [categorie, setCategorie] = useState(0)
+  const [Day, setDay] = useState('')
+  
+  let newDish = {
+    titre: titre,
+    description:description,
+    image:image,
+    prix:Number(prix),
+    categorieId:Number(categorie),
+    day:Day
   }
 
-  let condittion = titre.length === 0 || categorie === 0 || image === null
+  let condittion = !titre || !categorie || !image  || !description ||  !prix ||  !Day;
 
-  console.log(newProduct);
+  console.log(newDish);
 
+  const Create = (e) => {
+    // e.preventDefault();
+    console.log("hello")
+     axios.post('http://localhost:3005/dishes/', newDish, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+        .then(res => {
+            console.log(res);
+            navigate("/admin/dishes")
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
 
   
 
@@ -104,13 +124,13 @@ return (
                             <div className='py-2'>
                                 <div className='flex flex-col'>
                                     <label className=' font-medium text-gray-600'> description </label>
-                                    <input type='text' className='border-2 px-4 py-2 rounded-sm mt-2' placeholder='description' />
+                                    <input type='text' onChange={(e)=>setDescription(e.target.value)}  className='border-2 px-4 py-2 rounded-sm mt-2' placeholder='description' />
                                 </div>
                             </div>
                             <div className='py-2'>
                                 <div className='flex flex-col'>
                                     <label className=' font-medium text-gray-600'> Day </label>
-                                    <input type='text' className='border-2 px-4 py-2 rounded-sm mt-2' placeholder='Day' />
+                                    <input type='text' onChange={(e)=>setDay(e.target.value)}  className='border-2 px-4 py-2 rounded-sm mt-2' placeholder='Day' />
                                 </div>
                             </div>
 
@@ -118,7 +138,7 @@ return (
                     </div>
 
                     <div className='flex justify-end mt-10'>
-                        <Buttons condittion={condittion}  />
+                        <Buttons condittion={condittion}  createFun={Create} />
                     </div>
                 </div>
             </main>

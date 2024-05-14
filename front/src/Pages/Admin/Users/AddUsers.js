@@ -27,11 +27,14 @@ function AddUsers() {
     const [password, setPassword] = useState('')
     const [role, setRole] = useState('client')
     const newUser = {
-        
+        email:email,
+        fname:firstname,
+        lname:lastname,
+        pass:password
+
     }
     let lname=lastname
     let fname= firstname
-   
     let pass= password
     let condittion = lastname.length === 0 || firstname.length === 0 || email.length === 0 || password.length === 0 
 
@@ -51,8 +54,8 @@ function AddUsers() {
     )
         .then(response => response.json())
         .then(data => {
-            
            console.log(data)
+           navigate("/admin/users")
             
         })
         .catch(error => {

@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { IoIosClose } from 'react-icons/io';
 import { GetCategories, GetDish } from '../../../Components/Functions';
-
+import axios from 'axios';
 const Buttons = ({createFun, condittion}) => {
     return(
         <div className='flex space-x-2 items-stretch'>
@@ -26,7 +26,7 @@ const Buttons = ({createFun, condittion}) => {
 
 function EditDish() {
     const categories = GetCategories()
-    let { id } = useParams();
+    let {id} = useParams();
     const navigate = useNavigate();
     const Dish = GetDish(id)
     console.log(Dish)
@@ -50,13 +50,38 @@ function EditDish() {
    
    let newDish = {
      titre: titre,
+     description:description,
+     image:image,
+     prix:prix,
+     categorieId:categorie,
+     day:Day
    }
    if(typeof(image) === "object"){ newDish = {...newDish, image}}
-   let condittion = !titre || !image ;
+   let condittion = !titre || !image || !image;
    
    
 
    const [clearImage, setClearImage] = useState(false)
+
+   const  Update = () => {
+    // e.preventDefault();
+    console.log("Updated !");
+    axios.patch(`http://localhost:3005/dishes/${id}`, newDish, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then(res => {
+            console.log(res);
+            navigate('/admin/Dishes')
+            
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
+}
+
   return (
     <>
     <main className='flex'>
@@ -77,7 +102,7 @@ function EditDish() {
          
       </header>
       <main className='bg-gray-100 px-8 py-6 rounded-sm'>
-              <form   className='bg-white px-6 py-6 rounded-sm '>
+              <div   className='bg-white px-6 py-6 rounded-sm '>
                   <div className='w-full flex items-stretch space-x-8'>
                       <div className="w-2/5 flex items-center justify-center relative">
                           
@@ -146,9 +171,9 @@ function EditDish() {
                   </div>
 
                   <div className='flex justify-end mt-10'>
-                      <Buttons condittion={condittion} />
+                      <Buttons condittion={condittion} createFun={Update} />
                   </div>
-              </form>
+              </div>
           </main>
      
     </article>
