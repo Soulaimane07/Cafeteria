@@ -4,6 +4,10 @@ const mongoose = require('mongoose')
 
 const Paiment = require('../Models/Paiment')
 
+const stripe = require('stripe')('sk_test_51PEJqJAjFPVVpGXvzTxo9OjsTu8xRZAmkZjs6kabZfyTqyGUleQH47Lkl2ooWjySe2y1XGI6e054dkgfTybZ2Duz00LLtx3nU7');
+const YOUR_DOMAIN = 'http://localhost:3000';
+
+
 router.get('/', (req, res, next) => {
     Paiment.find()
         .select('_id user order stripeId')
@@ -36,6 +40,28 @@ router.post('/', (req, res, next) => {
             console.log(err);
             res.status(500).json({error: err})
         })
+})
+
+router.post('/checkout', (req, res, next) => {
+    console.log(req.body);
+    try {
+        const session = stripe.checkout.sessions.create({
+            line_items: [
+              {
+                price: 'price_1PEK1bAjFPVVpGXviT98pX9z',
+                quantity: 1,
+              },
+            ],
+            mode: 'payment',
+            success_url: `${YOUR_DOMAIN}`,
+            cancel_url: `${YOUR_DOMAIN}`,
+          });
+        
+          res.redirect(303, session.url);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: error });
+    }
 })
 
 router.get('/:paimentId', (req, res, next) => {

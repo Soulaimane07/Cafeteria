@@ -5,6 +5,7 @@ import { PageOrderActions } from '../../../Redux/Slices/PageOrder';
 import { serverUrl } from '../../../Components/Variables';
 import axios from 'axios';
 import { AddedToActions } from '../../../Redux/Slices/AddedToOrderSlice';
+import { getOrders } from '../../../Redux/Slices/OrderSlices';
 
 function PlatOrder() {
     const dispatch = useDispatch()
@@ -21,6 +22,7 @@ function PlatOrder() {
             .then((res)=> {
                 dispatch(AddedToActions.open({data: "The dish is added to your order menu", "link": "/order"}))
                 setTimeout(() => {
+                    dispatch(getOrders(user.data?._id))
                     dispatch(AddedToActions.close())
                 }, 3000);
             })
@@ -31,9 +33,9 @@ function PlatOrder() {
 
   return (
     <div className='Glass fixed top-0 left-0 w-full h-screen flex items-center justify-center '>
-        <div className=' bg-white w-1/2  rounded-md flex relative py-6 pr-6 space-x-4 items-stretch'>
+        <div className=' bg-white w-1/2  rounded-md flex relative py-6 pr-6 space-x-6 items-stretch'>
             <button className=' absolute top-10 right-6' onClick={Close}> <IoClose size={30} /> </button>
-            <section className='h-fit w-fit'>
+            <section className='h-fit w-fit px-4 '>
                 <img className='' src={`${serverUrl}/${plat.image}`} alt={plat.titre} />
             </section>
             <section className='py-3 h-fit'>
