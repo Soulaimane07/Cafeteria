@@ -6,7 +6,8 @@ import AdminNavbar from '../../../Components/Navbar/AdminNavbar'
 import Footer from '../../../Components/Footer/Footer'
 import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
 import Table from './Table';
-
+import { GetTable } from '../../../Components/Functions';
+import axios from 'axios';
 const Buttons = ({createFun, condittion}) => {
     return(
         <div className='flex space-x-2 items-stretch'>
@@ -23,23 +24,41 @@ const Buttons = ({createFun, condittion}) => {
 function EditTable() {
     let { id } = useParams();
     const navigate = useNavigate();
-    const Table = {"Capacity":4,"Disponibilite":"5",}
+    const Table = GetTable(id)
    console.log(Table)
     const [Capacity, setCapacity] = useState('')
     const [Disponibilite, setDisponibilite] = useState('')
 
     useEffect(()=>{
         if (Table){
-        setCapacity(Table.Capacity)
-        setCapacity(Table.Capacity)
+        setCapacity(Table.capacite)
+        setDisponibilite(Table.disponibilite)
     }},[Table])
       
       const newTableData = {
-          Capacity: Capacity,
-          Disponibilite: Disponibilite,
+        capacite: Capacity,
+        disponibilite: Disponibilite,
       }
     
-      let condittion = !Capacity|| !Disponibilite || !Capacity || !Disponibilite; 
+      let condittion = !Capacity ; 
+
+      const  Update = () => {
+        // e.preventDefault();
+        console.log("Updated !");
+        axios.patch(`http://localhost:3005/tables/${id}`, newTableData, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then(res => {
+                console.log(res);
+                navigate("/admin/Tables")
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+    }
   return (
     <>
     <main className='flex'>
@@ -73,9 +92,9 @@ function EditTable() {
                         <div className='py-2'>
                             <div className='flex flex-col'>
                                 <label className=' font-medium text-gray-600'> Disponibilite </label>
-                                <select onChange={(e)=> setDisponibilite(e.target.value)} className='border-2 px-4 py-2 rounded-sm mt-2'>
-                                        <option value="True">True</option>
-                                        <option value="False">False</option>
+                                <select value={Disponibilite} onChange={(e)=> setDisponibilite(e.target.value)} className='border-2 px-4 py-2 rounded-sm mt-2'>
+                                        <option value="true">True</option>
+                                        <option value="false">False</option>
                                     </select>
                             </div>
                         </div>
@@ -83,7 +102,7 @@ function EditTable() {
                 </div>
 
                 <div className='flex justify-end mt-10'>
-                    <Buttons condittion={true}  />
+                    <Buttons condittion={condittion} createFun={Update}  />
                 </div>
             </div>
         </main>

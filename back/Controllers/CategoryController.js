@@ -67,18 +67,23 @@ class CategoryController {
     async updateCategory(req, res, next) {
         try {
             const categoryId = req.params.categoryId;
-
-            const updateOps = {};
-            for (const ops of req.body) {
-                updateOps[ops.propName] = ops.value;
-            }
-
-            res.status(200).json({ status: "success", message: "User updated" });
+            const { titre, image } = req.body;
+    
+            let request = new sql.Request();
+            request.query(`UPDATE categories SET titre='${titre}', image='${image}' WHERE id=${categoryId}`, (err, records) => {
+                if (err) {
+                    console.log(err);
+                    res.status(400).json({ error: 'Failed to update category' });
+                } else {
+                    res.status(200).json({ status: 'success', data: records });
+                }
+            });
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: error });
         }
     }
+    
 
     async deleteCategory(req, res, next) {
         try {

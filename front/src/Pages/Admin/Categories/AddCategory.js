@@ -6,7 +6,8 @@ import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
 
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa6";
-
+import { GetCategories } from '../../../Components/Functions';
+import axios from 'axios';
 const Buttons = ({createFun, condittion}) => {
   return(
       <div className='flex space-x-2 items-stretch'>
@@ -20,19 +21,37 @@ const Buttons = ({createFun, condittion}) => {
   )  }
 
 function AddCategory() {
-  const categories = []
+
   const navigate = useNavigate();
   const [titre, setTitre] = useState('')
   const [image, setImage] = useState(null)
-  let userid = 1
   const newCategory = {
-      titre: titre,
+    titre: titre,
       image: image,
   }
 
-  let condittion = titre.length === 0 || image === null
+  let condittion = !titre || !image 
 
   console.log(newCategory);
+
+  const Create = () => {
+   
+
+    axios.post('http://localhost:3005/categories/', newCategory, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    })
+    .then(res => {
+        console.log(res);
+        navigate("/admin/categories");
+    })
+    .catch(err => {
+        console.log(err);
+    });
+};
+
+
   return (
     <>
     <main className='flex'>
@@ -78,7 +97,7 @@ function AddCategory() {
                       </div>
   
                       <div className='flex justify-end mt-10'>
-                          <Buttons condittion={condittion}  />
+                          <Buttons condittion={condittion} createFun={Create}  />
                       </div>
                   </div>
               </main>

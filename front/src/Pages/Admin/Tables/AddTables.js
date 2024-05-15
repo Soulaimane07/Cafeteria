@@ -6,7 +6,7 @@ import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
 
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa6";
-
+import { serverUrl } from '../../../Components/Variables'; 
 const Buttons = ({createFun, condittion}) => {
     return(
         <div className='flex space-x-2 items-stretch'>
@@ -22,20 +22,40 @@ const Buttons = ({createFun, condittion}) => {
 
 function AddTables() {
     const navigate = useNavigate();
-    const [id, setid] = useState('')
     const [capacite, setcapacite] = useState('')
-    const [disponibilite, setDisponibilite] = useState('')
+    const [disponibilite, setDisponibilite] = useState('True')
     const newTables = {
-        id: id,
         capacite: capacite,
-        Disponibilite: disponibilite,
+        disponibilite: disponibilite,
     }
 
-    let condittion = id.length === 0 || capacite.length === 0 || disponibilite.length === 0 
+    let condittion =  !capacite || !disponibilite
 
 
     console.log(newTables);
-
+    const Create = (e) => {
+        // e.preventDefault();
+        console.log("Created !");
+        fetch(`${serverUrl}/tables/`, 
+        {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({capacite, disponibilite})
+      }
+    )
+        .then(response => response.json())
+        .then(data => {
+           console.log(data)
+           navigate("/admin/tables")
+            
+        })
+        .catch(error => {
+            console.error(error)
+           
+        });
+}
   return (
     <>
     <main className='flex'>
@@ -84,7 +104,7 @@ function AddTables() {
                   </div>
 
                   <div className='flex justify-end mt-10'>
-                      <Buttons condittion={condittion} />
+                      <Buttons condittion={condittion} createFun={Create} />
                   </div>
               </div>
           </main>

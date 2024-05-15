@@ -35,7 +35,7 @@ class TableController {
     async createTable(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`INSERT INTO tables (capacite,image, disponibilite) VALUES ('${req.body.capacite}', '${req.body.image}', '${req.body.disponibilite}')`, (err, records)=> {
+            request.query(`INSERT INTO tables (capacite, disponibilite) VALUES ('${req.body.capacite}', '${req.body.disponibilite}')`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records });
@@ -67,17 +67,23 @@ class TableController {
     async updateTable(req, res, next) {
         try {
             const tableId = req.params.tableId;
-
-            const updateOps = {};
-            for (const ops of req.body) {
-                updateOps[ops.propName] = ops.value;
-            }
-            res.status(200).json({ status: "success", message: "User updated" });
+            const { capacite, disponibilite } = req.body;
+    
+            let request = new sql.Request();
+            request.query(`UPDATE tables SET capacite='${capacite}', disponibilite='${disponibilite}' WHERE id=${tableId}`, (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(400).json({ error: "Failed to update table." });
+                } else {
+                    res.status(200).json({ status: "success", message: "Table updated successfully." });
+                }
+            });
         } catch (error) {
-            console.log(error);
-            res.status(500).json({ error: error });
+            console.error(error);
+            res.status(500).json({ error: "Internal server error." });
         }
     }
+    
 
     async deleteTable(req, res, next) {
         try {

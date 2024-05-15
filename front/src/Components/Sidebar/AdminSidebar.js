@@ -41,7 +41,7 @@ function Sidebar() {
         {
             "title": "Reservations",
             "link": "../../admin/reservations",
-            "icon":<RiBillLine />
+            "icon": <RiBillLine />
         },
         { 
             "title": "Orders",

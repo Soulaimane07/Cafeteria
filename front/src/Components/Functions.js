@@ -130,6 +130,54 @@ export const GetCategorie = (id) => {
   return categorie
 }
 
+export const GetDish= (id) => {
+  const [dish, setDish] = useState([])
+
+  useEffect(()=> {
+    axios.get(`${serverUrl}/dishes/${id}`)
+    .then(res => {
+      setDish(res.data.data[0])
+    })
+    .catch(err=> {
+      console.error(err);
+    })
+  }, [id])
+
+  return dish
+}
+export const GetTable= (id) => {
+  const [table, setTable] = useState([])
+
+  useEffect(()=> {
+    axios.get(`${serverUrl}/tables/${id}`)
+    .then(res => {
+      setTable(res.data.data[0])
+    })
+    .catch(err=> {
+      console.error(err);
+    })
+  }, [id])
+
+  return table
+}
+
+export const GetUser= (id) => {
+  const [user, setUser] = useState([])
+
+  useEffect(()=> {
+    axios.get(`${serverUrl}/users/${id}`)
+    .then(res => {
+      setUser(res.data.data[0])
+    })
+    .catch(err=> {
+      console.error(err);
+    })
+  }, [id])
+
+  return user
+}
+
+
 
 
 
@@ -186,3 +234,9 @@ export const IsFavorated = (plat, user) => {
 
 
 
+export const Removeuser = (id) => {
+  axios.delete(`http://localhost:3005/users/${id}`)
+  .then(res =>{
+    console.log("Deleted !");
+  })
+}

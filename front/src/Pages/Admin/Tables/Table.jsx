@@ -51,7 +51,7 @@ function Table() {
                   {list.disponibilite?"True":"False"}
                   </td>
                   <td class="px-6 py-4 ">
-                  <Link to=''>
+                  <Link to={`/admin/edittable/${list.id}`}>
                   <button  className=' opacity-40 hover:opacity-100 hover:text-blue-600 transition-all mr-4 '>
                       <BiEditAlt size={25} />
                   </button>

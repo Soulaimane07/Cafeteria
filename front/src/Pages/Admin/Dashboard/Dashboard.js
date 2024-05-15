@@ -18,25 +18,26 @@ function Dashboard() {
   const Dishes=GetDishes()
   const Orders=GetOrders()
   const Reservations=GetReservations()
+  const paiments=[]
   const list =[
     {
         image: <FaRegUser size={40} />,
         title: "Users",
         stats:Users.length,
-        link:"../../admin/readuser"
+        link:"../../admin/users"
        
     },
     {
         image: <IoRestaurantOutline size={40} />,
         title: "Dishes",
         stats:Dishes.length,
-        link:"../../admin/readDish"
+        link:"../../admin/Dishes"
     },
     {
         image: <BiCategory size={40} />,
         title: "Catrgories",
         stats: Categories.length,
-        link:"../../admin/readcategorie"
+        link:"../../admin/categories"
        
        
     },
@@ -44,25 +45,25 @@ function Dashboard() {
       image: <IoCartOutline size={40} />,
       title: "Orders",
       stats: Orders.length,
-      link:"../../admin/readcategorie"
+      link:"../../admin/Orders"
   },
   {
     image: <MdOutlineTableBar size={40} />,
     title: "Tables",
     stats: Tables.length,
-    link:"../../admin/readcategorie"
+    link:"../../admin/Tables"
 },
   {
     image: <RiBillLine size={40} />,
     title: "Reservations",
     stats: Reservations.length,
-    link:"../../admin/readcategorie"
+    link:"../../admin/Reservations"
 },
 {
   image: <MdAttachMoney size={40} />,
   title: "Paiments",
-  stats: "",
-  link:"../../admin/readcategorie"
+  stats: paiments.length,
+  link:"../../admin/Paiments"
 },
     
 ]

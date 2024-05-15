@@ -5,7 +5,8 @@ import { useParams,useNavigate } from 'react-router-dom';
 import AdminNavbar from '../../../Components/Navbar/AdminNavbar'
 import Footer from '../../../Components/Footer/Footer'
 import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
-
+import { GetUser } from '../../../Components/Functions';
+import axios from 'axios';
 const Buttons = ({createFun, condittion}) => {
     return(
         <div className='flex space-x-2 items-stretch'>
@@ -22,7 +23,7 @@ const Buttons = ({createFun, condittion}) => {
 function EditUsers() {
     let { id } = useParams();
     const navigate = useNavigate();
-    const user = {"id":1,"lname":"last","fname":"pilot","email":"hamza@gmail.com","password":"123456","role":"client"}
+    const user = GetUser(id)
    console.log(user)
     const [lastname, setLastname] = useState('')
     const [firstname, setFirstname] = useState('')
@@ -34,19 +35,37 @@ function EditUsers() {
       setLastname(user.lname)
       setFirstname(user.fname)
       setEmail(user.email)
-      setPassword(user.password)
+      setPassword(user.pass)
   }},[user])
     
     const newUserData = {
         lname: lastname,
         fname: firstname,
         email: email,
-        password: password,
+        pass: password,
+        role:"client"
         
     }
   
     let condittion = !lastname || !firstname || !email || !password; 
   
+    const  Update = () => {
+        // e.preventDefault();
+        console.log("Updated !");
+        axios.patch(`http://localhost:3005/users/${id}`, newUserData, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then(res => {
+                console.log(res);
+                navigate("/admin/Users")
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+    }
   
   return (
     <>
@@ -103,7 +122,7 @@ function EditUsers() {
                 </div>
 
                 <div className='flex justify-end mt-10'>
-                    <Buttons condittion={condittion}  />
+                    <Buttons condittion={condittion} createFun={Update}  />
                 </div>
             </div>
         </main>

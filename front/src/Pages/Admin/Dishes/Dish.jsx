@@ -70,7 +70,7 @@ function Dish() {
                 {Dishe.day}
                 </td>
                 <td class="px-6 py-4 ">
-                <Link to="">
+                <Link to={`/admin/editdish/${Dishe.id}`}>
                 <button  className=' opacity-40 hover:opacity-100 hover:text-blue-600 transition-all mr-4 '>
                     <BiEditAlt size={25} />
                 </button>

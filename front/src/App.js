@@ -72,21 +72,25 @@ function App() {
           {/* <Route element={<AdminRoutes />}> */}
             <Route path='/admin/dashboard' element={<Dashboard />} />
             <Route path='/admin</users' element={<ReadUsers />} />
+            <Route path='/admin/dashboard' element={<Dashboard />} />
+            <Route path='/admin/users' element={<ReadUsers />} />
             <Route path='/admin/adduser' element={<AddUsers />} />
-            <Route path='/admin/edituser' element={<EditUsers />} />
+            <Route path='/admin/edituser/:id' element={<EditUsers />} />
             <Route path='/admin/dishes' element={<ReadDish />} />
             <Route path='/admin/adddish' element={<AddDish />} />
+            <Route path='/admin/editdish/:id' element={<EditDish />} />
             <Route path='/admin/categories' element={<ReadCategories />} />
             <Route path='/admin/addcategory' element={<AddCategory />} />
             <Route path='/admin/editcategory/:id' element={<EditCategory />} />
             <Route path='/admin/tables' element={<ReadTables />} />
             <Route path='/admin/addtable' element={<AddTables />} />
-            <Route path='/admin/edittable' element={<EditTable />} />
+            <Route path='/admin/edittable/:id' element={<EditTable />} />
             <Route path='/admin/reservations' element={<ReadReservations/>} />
             <Route path='/admin/orders' element={<ReadOrders />} />
             <Route path='/admin/paiments' element={<ReadPaiment />} />
             <Route path='/admin/addtable' element={<AddTables />} />
             <Route path='/admin/editdish' element={<EditDish />} />
+          {/* </Route> */}
           {/* </Route> */}
           
           <Route element={<ClientRoutes />}>

@@ -35,7 +35,7 @@ class DishController {
     async createDish(req, res, next) {
         try {
             let request = new sql.Request();
-            request.query(`INSERT INTO dishes (titre,description,image, prix, categorieId,day) VALUES ('${req.body.titre}', '${req.body.description}', '${req.body.image}', '${req.body.prix}',, '${req.body.categorieId}', '${req.body.day}')`, (err, records)=> {
+            request.query(`INSERT INTO dishes (titre,description,image, prix, categorieId,day) VALUES ('${req.body.titre}', '${req.body.description}', '${req.body.image}', '${req.body.prix}', '${req.body.categorieId}', '${req.body.day}')`, (err, records)=> {
                 if(err) console.log(err);
                 else {
                     res.status(200).json({ status: "success", data: records });
@@ -63,23 +63,26 @@ class DishController {
             res.status(500).json({ error: error });
         }
     }
-
     async updateDish(req, res, next) {
         try {
             const dishId = req.params.dishId;
-
-            const updateOps = {};
-            for (const ops of req.body) {
-                updateOps[ops.propName] = ops.value;
-            }
-
-            res.status(200).json({ status: "success", message: "User updated" });
+            const { titre, description, image, prix, categorieId, day } = req.body;
+    
+            let request = new sql.Request();
+            request.query(`UPDATE dishes SET titre='${titre}', description='${description}', image='${image}', prix='${prix}', categorieId='${categorieId}', day='${day}' WHERE id=${dishId}`, (err, records) => {
+                if (err) {
+                    console.log(err);
+                    res.status(400).json({ error: 'Failed to update dish' });
+                } else {
+                    res.status(200).json({ status: 'success', data: records });
+                }
+            });
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: error });
         }
     }
-
+    
     async deleteDish(req, res, next) {
         try {
             const dishId = req.params.dishId;

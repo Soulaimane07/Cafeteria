@@ -43,11 +43,6 @@ function Paiment() {
                   </td>
                  
                   <td class="px-6 py-4 ">
-                  <Link to=''>
-                  <button  className=' opacity-40 hover:opacity-100 hover:text-blue-600 transition-all mr-4 '>
-                      <BiEditAlt size={25} />
-                  </button>
-                  </Link>
                   <button  className=' opacity-40 hover:opacity-100 hover:text-red-600 transition-all '>
                       <CiTrash size={25} />
                   </button>
