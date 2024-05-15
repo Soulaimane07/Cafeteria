@@ -2,13 +2,11 @@ const express = require("express")
 const router = express.Router()
 const mongoose = require('mongoose')
 
-const Order = require('../Models/Order')
+const Reservation = require('../Models/Reservation')
 
 router.get('/', (req, res, next) => {
-    Order.find()
-        .select('_id user plat quantite')
-        .populate('user')
-        .populate('plat')
+    Reservation.find()
+        .select('_id user table')
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -22,16 +20,29 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-    const order = new Order({
+    const reservation = new Reservation({
         _id: new mongoose.Types.ObjectId(),
         user: req.body.user,
-        plat: req.body.plat,
-        quantite: req.body.quantite,
+        table: req.body.table,
     })
 
-    order.save()
+    reservation.save()
         .then(docs => {
             res.status(201).json({status: "success", data: docs})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({error: err})
+        })
+})
+
+router.post('/isfavorated', (req, res, next) => {
+    let user = req.body.user
+    let table = req.body.table
+
+    Reservation.find({user: user, table: table})
+        .then(docs => {
+            res.status(200).json({status: "success", data: docs.length === 0 ? false : docs[0]})
         })
         .catch(err => {
             console.log(err);
@@ -42,10 +53,10 @@ router.post('/', (req, res, next) => {
 router.get('/:userId', (req, res, next) => {
     const userId = req.params.userId
 
-    Order.find({user: userId})
-        .select("_id user plat quantite")
+    Reservation.find({user: userId})
+        .select("_id user table")
         .populate('user')
-        .populate('plat')
+        .populate('table')
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -56,10 +67,10 @@ router.get('/:userId', (req, res, next) => {
         })
 })
 
-router.delete('/:orderId', (req, res, next) => {
-    const orderId = req.params.orderId
+router.delete('/:reservationId', (req, res, next) => {
+    const reservationId = req.params.reservationId
 
-    Order.deleteOne({_id: orderId})
+    Reservation.deleteOne({_id: reservationId})
         .exec()
         .then(result => {
             res.status(200).json(result)
@@ -73,7 +84,7 @@ router.delete('/:orderId', (req, res, next) => {
 })
 
 router.delete('/', (req, res, next) => {
-    Order.deleteMany()
+    Reservation.deleteMany()
         .exec()
         .then(result => {
             res.status(200).json(result)
