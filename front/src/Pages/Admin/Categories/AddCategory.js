@@ -35,11 +35,9 @@ function AddCategory() {
   console.log(newCategory);
 
   const Create = () => {
-    const formData = new FormData();
-    formData.append('titre', titre);
-    formData.append('image', image);
+   
 
-    axios.post('http://localhost:3005/categories/', formData, {
+    axios.post('http://localhost:3005/categories/', newCategory, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
