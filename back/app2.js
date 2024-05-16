@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 const usersRoutes = require('./Controllers/UserController2')
 app.use('/users', usersRoutes)
 
-const paimentsRoutes = require('./Controllers/PaimentController2')
+const paimentsRoutes = require('./Controllers/PaimentController')
 app.use('/paiments', paimentsRoutes)
 
 const catsRoutes = require('./Controllers/CategorieController2')
@@ -45,6 +45,12 @@ app.use('/favorites', favoriteRoutes)
 
 const orderRoutes = require('./Controllers/OrderController2')
 app.use('/orders', orderRoutes)
+
+const tableRoutes = require('./Controllers/TableController')
+app.use('/tables', tableRoutes)
+
+const reservationRoutes = require('./Controllers/ReserationController2')
+app.use('/reservations', reservationRoutes)
 
 
 

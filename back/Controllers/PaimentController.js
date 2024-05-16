@@ -85,19 +85,52 @@ class PaymentController {
 
     async checkout(req, res, next){
         try {
+            let x = req.body.plats
+            console.log(x);
+            let products= [{
+                "price_data": {
+                    "currency": "usd",
+                    "unit_amount":  10*100,
+                    "product_data": {
+                        "name": "11",
+                    },
+                },
+                "quantity": 1,
+            }, {
+                "price_data": {
+                    "currency": "usd",
+                    "unit_amount":  10*100,
+                    "product_data": {
+                        "name": "11",
+                    },
+                },
+                "quantity": 1,
+            }]
+
+             x?.forEach(item => {
+                products.push({
+                    "price_data": {
+                        "currency": "usd",
+                        "unit_amount":  10*100,
+                        "product_data": {
+                            "name": "11",
+                        },
+                    },
+                    "quantity": 1,
+                });
+            });
+
+            console.log(products);
+        
             const session = await stripe.checkout.sessions.create({
-                line_items: [
-                  {
-                    price: 'price_1PEK1bAjFPVVpGXviT98pX9z',
-                    quantity: 1,
-                  },
-                ],
+                payment_method_types: ['card'],
+                line_items: products,
                 mode: 'payment',
                 success_url: `${YOUR_DOMAIN}`,
                 cancel_url: `${YOUR_DOMAIN}`,
-              });
+            });
             
-              res.redirect(303, session.url);
+            res.redirect(303, session.url);
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: error });

@@ -6,7 +6,7 @@ const Order = require('../Models/Order')
 
 router.get('/', (req, res, next) => {
     Order.find()
-        .select('_id user plat')
+        .select('_id user plat quantite')
         .populate('user')
         .populate('plat')
         .exec()
@@ -26,6 +26,7 @@ router.post('/', (req, res, next) => {
         _id: new mongoose.Types.ObjectId(),
         user: req.body.user,
         plat: req.body.plat,
+        quantite: req.body.quantite,
     })
 
     order.save()
@@ -42,7 +43,7 @@ router.get('/:userId', (req, res, next) => {
     const userId = req.params.userId
 
     Order.find({user: userId})
-        .select("_id user plat")
+        .select("_id user plat quantite")
         .populate('user')
         .populate('plat')
         .exec()

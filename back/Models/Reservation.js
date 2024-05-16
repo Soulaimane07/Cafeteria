@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 
-const orderSchema = mongoose.Schema({
+const reservationSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    plat: {
+    table: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Plat",
+        ref: "Table",
         unique: false,
     },
     user: {
@@ -12,7 +12,6 @@ const orderSchema = mongoose.Schema({
         ref: "User",
         unique: false,
     },
-    quantite: Number
 })
 
-module.exports = mongoose.model('Order', orderSchema)
+module.exports = mongoose.model('Reservation', reservationSchema)

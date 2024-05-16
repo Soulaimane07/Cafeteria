@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AdminNavbar from '../../../Components/Navbar/AdminNavbar'
 import Footer from '../../../Components/Footer/Footer'
 import AdminSidebar from '../../../Components/Sidebar/AdminSidebar'
-
+import { serverUrl } from '../../../Components/Variables'; 
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa6";
 import { GetCategories } from '../../../Components/Functions';
@@ -45,22 +45,28 @@ function AddDish() {
 
   const Create = (e) => {
     // e.preventDefault();
-    console.log("hello")
-     axios.post('http://localhost:3005/dishes/', newDish, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-        .then(res => {
-            console.log(res);
-            navigate("/admin/dishes")
-        })
-        .catch(err => {
-            console.log(err);
-        })
+    console.log("Created !");
+    fetch(`${serverUrl}/dishes/`, 
+    {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    body: JSON.stringify({titre, description, image, prix,categorie,Day})
+  }
+)
+    .then(response => response.json())
+    .then(data => {
+       console.log(data)
+       navigate("/admin/dishes")
+        
+    })
+    .catch(error => {
+        console.error(error)
+       
+    });
 }
 
-  
 
   
 return (

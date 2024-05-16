@@ -2,15 +2,11 @@ const express = require("express")
 const router = express.Router()
 const mongoose = require('mongoose')
 
-const Paiment = require('../Models/Paiment')
-
-const stripe = require('stripe')('sk_test_51PEJqJAjFPVVpGXvzTxo9OjsTu8xRZAmkZjs6kabZfyTqyGUleQH47Lkl2ooWjySe2y1XGI6e054dkgfTybZ2Duz00LLtx3nU7');
-const YOUR_DOMAIN = 'http://localhost:3000';
-
+const Reservation = require('../Models/Reservation')
 
 router.get('/', (req, res, next) => {
-    Paiment.find()
-        .select('_id user order stripeId')
+    Reservation.find()
+        .select('_id user table')
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -24,15 +20,13 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-    console.log(req.body);
-    const paiment = new Paiment({
+    const reservation = new Reservation({
         _id: new mongoose.Types.ObjectId(),
         user: req.body.user,
-        order: req.body.order,
-        stripeId: req.body.stripeId
+        table: req.body.table,
     })
 
-    paiment.save()
+    reservation.save()
         .then(docs => {
             res.status(201).json({status: "success", data: docs})
         })
@@ -42,33 +36,27 @@ router.post('/', (req, res, next) => {
         })
 })
 
-router.post('/checkout', (req, res, next) => {
-    console.log(req.body);
-    try {
-        const session = stripe.checkout.sessions.create({
-            line_items: [
-              {
-                price: 'price_1PEK1bAjFPVVpGXviT98pX9z',
-                quantity: 1,
-              },
-            ],
-            mode: 'payment',
-            success_url: `${YOUR_DOMAIN}`,
-            cancel_url: `${YOUR_DOMAIN}`,
-          });
-        
-          res.redirect(303, session.url);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: error });
-    }
+router.post('/isfavorated', (req, res, next) => {
+    let user = req.body.user
+    let table = req.body.table
+
+    Reservation.find({user: user, table: table})
+        .then(docs => {
+            res.status(200).json({status: "success", data: docs.length === 0 ? false : docs[0]})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({error: err})
+        })
 })
 
-router.get('/:paimentId', (req, res, next) => {
-    const paimentId = req.params.paimentId
+router.get('/:userId', (req, res, next) => {
+    const userId = req.params.userId
 
-    Paiment.find({_id: paimentId})
-        .select("_id user order stripeId")
+    Reservation.find({user: userId})
+        .select("_id user table")
+        .populate('user')
+        .populate('table')
         .exec()
         .then(docs => {
             res.status(200).json({status: "success", data: docs})
@@ -79,10 +67,10 @@ router.get('/:paimentId', (req, res, next) => {
         })
 })
 
-router.delete('/:paimentId', (req, res, next) => {
-    const paimentId = req.params.paimentId
+router.delete('/:reservationId', (req, res, next) => {
+    const reservationId = req.params.reservationId
 
-    Paiment.deleteOne({_id: paimentId})
+    Reservation.deleteOne({_id: reservationId})
         .exec()
         .then(result => {
             res.status(200).json(result)
@@ -96,7 +84,7 @@ router.delete('/:paimentId', (req, res, next) => {
 })
 
 router.delete('/', (req, res, next) => {
-    Paiment.deleteMany()
+    Reservation.deleteMany()
         .exec()
         .then(result => {
             res.status(200).json(result)

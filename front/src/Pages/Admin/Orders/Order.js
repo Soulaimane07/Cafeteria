@@ -25,17 +25,14 @@ function Order() {
       <table class="w-full text-sm text-center rtl:text-right text-gray-500 ">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
               <tr>
-                  <th scope="col" class="px-6 py-3">
-                      Id
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                     Id Client
+                  <th scope="col" class="px-6 text-left py-3">
+                     Client
                   </th>
                   <th scope="col" class="px-6 py-3">
                      Id Dish
                   </th>
                   <th scope="col" class="px-6 py-3">
-                     Order Date
+                     Price
                   </th>
                   <th scope="col" class="px-6 py-3">
                       Action
@@ -44,17 +41,14 @@ function Order() {
           </thead>
           <tbody>
               {orders.map((list,key)=>(<tr  class="bg-white border-b ">
-                  <th  scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                      {list.id}
-                  </th>
-                  <td class="px-6 py-4">
-                      {list.clientId}
+                  <td class="px-6 text-left py-4">
+                      {list.user.email}
                   </td>
                   <td class="px-6 py-4">
-                      {list.dishId}
+                      {list.plat.titre}
                   </td>
                   <td class="px-6 py-4">
-                      {list.order_date}
+                      {list.plat.prix}
                   </td>
                  
                   <td class="px-6 py-4 ">

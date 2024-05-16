@@ -30,7 +30,7 @@ function Signup() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({email, fname, lname, pass})
+            body: JSON.stringify({email, fname, lname, pass, role: "client"})
           }
         )
             .then(response => response.json())

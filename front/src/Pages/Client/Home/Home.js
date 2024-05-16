@@ -22,13 +22,6 @@ function Home() {
                     <Categorie />
                     <Plats />
                 </section>
-                <section>
-                  <form action={`${serverUrl}/paiments/checkout`} method="POST">
-                    <button type="submit">
-                      Checkout
-                    </button>
-                  </form>
-                </section>
             </section>
         </main>
 

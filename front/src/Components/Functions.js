@@ -234,3 +234,9 @@ export const IsFavorated = (plat, user) => {
 
 
 
+export const Removeuser = (id) => {
+  axios.delete(`http://localhost:3005/users/${id}`)
+  .then(res =>{
+    console.log("Deleted !");
+  })
+}
