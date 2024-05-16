@@ -1,7 +1,7 @@
 const config = {
     user: 'cafeteria',
     password: 'cafeteria',
-    server: 'localhost\\SQLEXPRESS',
+    server: 'DESKTOP-M71AEH4\SQLEXPRESS',
     database: 'cafeteria',
     options: {
         encrypt: true,
